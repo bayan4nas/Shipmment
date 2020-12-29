@@ -1,0 +1,88 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="shipment_order_list">
+      <field name="name">shipment list</field>
+      <field name="model">shipment.order</field>
+      <field name="arch" type="xml">
+        <tree>
+
+          <field name="name"/>
+          <field name="date_order"/>
+          <field name="partner_id"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record id="veiw_shipment_order" model="ir.ui.view">
+      <field name="name">shipment.shipment.order.form</field>
+      <field name="model">shipment.order</field>
+      <field name="arch" type="xml">
+        <form string="Shipment Order" class="o_sale_order">
+          <header>
+            <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
+            <button name="create_customer_invocie" type="object" string="Create Customer Invoice" class="oe_highlight" states="confirm,bill"/>
+            <button name="create_vendor_bill" type="object" string="Create Vendor Bill" class="oe_highlight" states="confirm,invoice"/>
+
+            <field name="state" widget="statusbar" statusbar_visible="draft,confirm,bill,invoice"/>
+          </header>
+          <sheet>
+
+            <div class="oe_title">
+              <h1>
+                <field name="name" readonly="1"/>
+              </h1>
+            </div>
+            <group>
+              <group>
+                <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True}'/>
+                <field name="date_order"/>
+              </group>
+            </group>
+            <notebook>
+              <page string="Order Lines" name="order_lines">
+                <field name="line_ids" attrs="{'readonly': [('state', 'in', ('confirm'))]}">
+                  <tree editable="bottom">
+                    <field name="product_id" domain="[('type', '=', 'service')]" />
+                    <field name="qty"/>
+                    <field name="cost"/>
+                  </tree>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record id="action_orders" model="ir.actions.act_window">
+      <field name="name">Shipment Orders</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">shipment.order</field>
+      <field name="view_mode">tree,kanban,form</field>
+      <!-- <field name="context">{}</field> -->
+      <!-- <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field> -->
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+                    Create a new shipment, the first step of a new sale!
+        </p>
+        <p>
+                    Once the quotation is confirmed, it becomes a shimpment order.<br/>
+ You will be able to create an invoice and bill , collect the payment,pay bills
+        </p>
+      </field>
+    </record>
+
+
+    <!-- web_icon="shimpment,static/description/icon.png" -->
+    <menuitem id="shipment_menu_root" name="Shipment" web_icon="shimpment,static/description/icon.png" sequence="7"/>
+
+    <menuitem id="shipment_order_menu" name="Orders" parent="shipment_menu_root" action="action_orders" sequence="1"/>
+
+  </data>
+</odoo>
