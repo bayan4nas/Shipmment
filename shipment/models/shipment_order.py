@@ -18,8 +18,7 @@ class ShipmentOrder(models.Model):
     
     
     state = fields.Selection(
-        string='State',
-        selection=[('draft', 'Draft'), ('confirm', 'confrim'),('invoice', 'Invoiced'),('bill', 'Billed')],default='draft'
+        selection=[('draft', 'Draft'), ('confirm', 'confrim'),('invoice', 'Invoiced'),('bill', 'Billed')],string='State',default='draft'
     )
     
     date_order = fields.Datetime(string='Order Date', required=True, readonly=True, index=True, states={'draft': [('readonly', False)]}, copy=False, default=fields.Datetime.now, help="Creation date of draft orders,\nConfirmation date of confirmed orders.")
@@ -41,6 +40,7 @@ class ShipmentOrder(models.Model):
         invoice_vals = {
         'partner_id': self.partner_id.id,
         'state': 'draft',
+        'policy_id':self.id,
         'type': 'out_invoice' if invoice_type == 'out' else 'in_invoice',
         'invoice_date': self.date_order,
         'invoice_line_ids': [(0, 0, {

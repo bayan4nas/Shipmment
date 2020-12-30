@@ -19,13 +19,19 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','payment'],
+    'depends': ['base','account'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
-        'views/views.xml',
+        'wizards/profit_lose.xml',
+        'reports/report_shipment_profit_lose.xml',
+        'reports/report.xml', 
+        'views/shipment_order.xml',
+        'views/account_move.xml',
+        'views/menus.xml',
+        
     ],
     # only loaded in demonstration mode
    

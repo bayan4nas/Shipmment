@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <report
+        id="action_profit_lose_report"
+        string="Profit and Lose"
+        model="profit.lose.report"
+        report_type="qweb-pdf"
+        name="shipment.profit_lose_report"
+        file="shipment.profit_lose_report"/>
+
+    
+
+</odoo>

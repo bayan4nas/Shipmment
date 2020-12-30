@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- shippment base menu -->
+    <menuitem id="shipment_menu_root" name="Shipment" web_icon="shipment,static/description/icon.png" sequence="7"/>
+    
+    <!-- Orders main menu -->
+    <menuitem id="shipment_order_root_menu" name="Orders" parent="shipment_menu_root" sequence="1"/>
+    <!-- Orders menu -->
+    <menuitem id="shipment_order_menu" name="Orders" parent="shipment_order_root_menu" action="action_orders" />
+
+    <!-- report main menu -->
+    <menuitem id="shipment_order_reports" name="Reports" parent="shipment_menu_root"  sequence="2"/>
+    <!-- profit lose menu -->
+    <menuitem id="shipment_order_profit_lose" name="Profit Lose" parent="shipment_order_reports" action="profit_lose_wizard"/>
+
+</odoo>
