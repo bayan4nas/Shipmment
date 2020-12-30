@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="profit_lose_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <span style="text-align:center;">From: <t t-esc="data['start']"/>
+ To <t t-esc="data['end']"/>
+                    </span>
+                </div>
+                <div class="row">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">
+                                    <strong>Number </strong>
+                                </th>
+                                <th style="text-align:left;">
+                                    <strong>name </strong>
+                                </th>
+                                <th style="text-align:left;">
+                                    <strong>Vendor Bills </strong>
+                                </th>
+                                <th style="text-align:left;">
+                                    <strong>Customer Invoice </strong>
+                                </th>
+                                <th style="text-align:left;">
+                                    <strong>Profit And Lose</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         <t t-set="number" t-value="1" />
+                            <t t-foreach="result" t-as="o">
+
+                               
+    
+
+
+                                <tr>
+                                    <t t-set="final" t-value="0" />
+                                    <td style="text-align:left;">
+                                        <t t-esc="number"/>
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <t t-esc="o['name']"/>
+                                    </td>
+                                    <td style="text-align:left;">
+
+
+                                        <t t-esc="o['bill']"/>
+
+                                    </td>
+                                    <td style="text-align:left;">
+
+                                        <span t-esc="o['invoice']"/>
+
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <t t-esc="o['total']"/>
+                                    </td>
+                                    <t t-set="number" t-value="number + 1" />
+                                </tr>
+
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </t>
+</template>
+
+</odoo>
+
+
+
+
+
