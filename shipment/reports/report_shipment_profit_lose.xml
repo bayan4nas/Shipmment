@@ -61,7 +61,7 @@
 
                                     <td style="text-align:left;">
 
-                                        <span t-esc="bill - inv"/>
+                                        <span t-esc="inv - bill"/>
 
                                     </td>
     
