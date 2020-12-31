@@ -2,30 +2,30 @@
 <odoo>
 
     <!--Create a Wizard and Call it in Button Click Odoo-->
-    <!--  https://www.youtube.com/watch?v=K60oF3-vaxA&list=PLqRRLx0cl0hoJhjFWkFYowveq2Zn55dhM&index=36  -->
+    <!-- https://www.youtube.com/watch?v=K60oF3-vaxA&list=PLqRRLx0cl0hoJhjFWkFYowveq2Zn55dhM&index=36  -->
     <!--How To Call Wizard From Menu Item Odoo-->
-    <!--  https://www.youtube.com/watch?v=qpkVKy9JzEw&list=PLqRRLx0cl0hoJhjFWkFYowveq2Zn55dhM&index=37 -->
-     <record id="profit_lose_form" model="ir.ui.view">
-         <field name="name">profit.lose.report.wizard</field>
-         <field name="model">profit.lose.report</field>
-         <field name="arch" type="xml">
+    <!-- https://www.youtube.com/watch?v=qpkVKy9JzEw&list=PLqRRLx0cl0hoJhjFWkFYowveq2Zn55dhM&index=37 -->
+    <record id="profit_lose_form" model="ir.ui.view">
+        <field name="name">profit.lose.report.wizard</field>
+        <field name="model">profit.lose.report</field>
+        <field name="arch" type="xml">
             <form string="Profit And Lose">
                 <group>
-                <group>
-                    <field name="start"/>
-                    <field name="end"/>
-                </group>
-                <group>
-                    <field name="policy_id"/>
-                </group>
+                    <group>
+                        <field name="start"/>
+                        <field name="end"/>
+                    </group>
+                    <group>
+                        <field name="policy_ids" widget="many2many_tags" />
+                    </group>
                 </group>
                 <footer>
                     <button name="print_report" string="Print" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
-         </field>
-     </record>
+        </field>
+    </record>
 
     <record id="profit_lose_wizard" model="ir.actions.act_window">
         <field name="name">Profit Lose</field>

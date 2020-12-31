@@ -33,35 +33,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                         <t t-set="number" t-value="1" />
+                            <t t-set="number" t-value="1" />
+                            <t t-set="bill" t-value="0" />
+                            <t t-set="inv" t-value="0" />
+                            
                             <t t-foreach="result" t-as="o">
-
-                               
-    
-
-
                                 <tr>
                                     <t t-set="final" t-value="0" />
                                     <td style="text-align:left;">
                                         <t t-esc="number"/>
                                     </td>
                                     <td style="text-align:left;">
-                                        <t t-esc="o['name']"/>
+                                        <t t-esc="o.name"/>
                                     </td>
                                     <td style="text-align:left;">
-
-
-                                        <t t-esc="o['bill']"/>
-
+                                        <t t-if="o.bill_id">
+                                            <t t-esc="o.bill_id.amount_total"/>
+                                            <t t-set="bill" t-value="bill + o.bill_id.amount_total" />
+                                        </t>
                                     </td>
+                                    <td>
+                                        <t t-if="o.inv_id">
+                                            <t t-esc="o.inv_id.amount_total"/>
+                                            <t t-set="inv" t-value="inv + o.inv_id.amount_total" />
+                                        </t>
+                                    </td>
+
                                     <td style="text-align:left;">
 
-                                        <span t-esc="o['invoice']"/>
+                                        <span t-esc="inv - bill"/>
 
                                     </td>
-                                    <td style="text-align:left;">
-                                        <t t-esc="o['total']"/>
-                                    </td>
+    
                                     <t t-set="number" t-value="number + 1" />
                                 </tr>
 

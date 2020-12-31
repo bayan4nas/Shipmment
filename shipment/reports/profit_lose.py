@@ -1,4 +1,4 @@
-from odoo import api, models, _
+from odoo import api, models,fields,  _
 
 
 class ProfitReport(models.AbstractModel):
@@ -7,27 +7,18 @@ class ProfitReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        print("finalllllllllllllll====", data['form']['policy_id'])
-        if data['form']['policy_id']:
-            policies_invoice = self.env['account.move'].search([('policy_id', '=', data['form']['policy_id'][0]),('invoice_date','>=',data['form']['start']),('invoice_date','<=',data['form']['end'])])
-            policies_bill = self.env['account.move'].search([('policy_id', '=', data['form']['policy_id'][0]),('invoice_date','>=',data['form']['start']),('invoice_date','<=',data['form']['end']),('type','=','out_invoice')])
-        else:
-            policies_invoice = self.env['account.move'].search([('invoice_date','>=',data['form']['start']),('invoice_date','<=',data['form']['end'])])
-            policies_bill = self.env['account.move'].search([('invoice_date','>=',data['form']['start']),('invoice_date','<=',data['form']['end']),('type','=','out_invoice')])
-        result = []
-        for bill in policies_bill:
-            for inv in policies_invoice:
-                if bill.policy_id.id == inv.policy_id.id:
-                    vals = {
-                        'name': inv.name,
-                        'bill': bill.amount_total,
-                        'invoice': inv.amount_total,
-                        'total':inv.amount_total - bill.amount_total,
-                    }
-            result.append(vals)
+        start = data['form']['start']
+        end = data['form']['end']
+        domain = [('date_order','>=',start),('date_order','<=',end)]
+        if data['form']['policy_ids']:
+            domain += [('id','in',data['form']['policy_ids'])]
+
+        shipments = self.env['shipment.order'].search(domain)
+       
+       
         return {
             'doc_model': 'account.move',
             'docs': docids,
             'data': data['form'],
-            'result':result,
+            'result':shipments,
         }
