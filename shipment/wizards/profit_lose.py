@@ -21,7 +21,7 @@ class CreateAppointment(models.TransientModel):
         
     )
     
-    policy_id = fields.Many2one(
+    policy_ids = fields.Many2many(
         string='Policy',
         comodel_name='shipment.order',
     )
@@ -37,5 +37,4 @@ class CreateAppointment(models.TransientModel):
             'model': 'profit.lose.report',
             'form': data
         }
-        print("data-=========",datas)
         return self.env.ref('shipment.action_profit_lose_report').report_action(self.id,datas)
