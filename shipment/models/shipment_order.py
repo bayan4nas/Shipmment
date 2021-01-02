@@ -83,6 +83,9 @@ class ShipmentOrder(models.Model):
         return result
 
     def create_moves(self,invoice_type):
+        """call this method with type 'in' t create bill or /
+        type 'out' to create invocie"""
+
         invoice_vals = {
         'partner_id': self.customer_id.id if invoice_type == 'out' else self.vendor_id.id,
         'state': 'draft',
