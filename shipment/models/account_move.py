@@ -8,7 +8,7 @@ class AccountMove(models.Model):
     #when create bill or invoice ,
     # it will automatically link to its policy by this field
     policy_id = fields.Many2one(
-        string='Policy',
+        string='Policy Ref',
         comodel_name='shipment.order',
     )
     

@@ -9,7 +9,7 @@ class ShipmentOrder(models.Model):
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
     _description = 'Shipment Order'
 
-    name = fields.Char(string='Shipment Number', required=True, readonly=True, default=lambda self: _('New'), copy=False)
+    name = fields.Char(string='Policy Number', required=True,)
     customer_id = fields.Many2one(
         string='Customer',
         comodel_name='res.partner',
@@ -74,13 +74,13 @@ class ShipmentOrder(models.Model):
     
     
     
-    @api.model
-    def create(self, vals):
-        if vals.get('name', _('New')) == _('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('shipment.order') or _('New')
+    # @api.model
+    # def create(self, vals):
+    #     if vals.get('name', _('New')) == _('New'):
+    #         vals['name'] = self.env['ir.sequence'].next_by_code('shipment.order') or _('New')
     
-        result = super(ShipmentOrder, self).create(vals)
-        return result
+    #     result = super(ShipmentOrder, self).create(vals)
+    #     return result
 
     def create_moves(self,invoice_type):
         """call this method with type 'in' t create bill or /
@@ -105,20 +105,40 @@ class ShipmentOrder(models.Model):
             
         else:
             self.write({'bill_id':invoice.id,'billed':True})
-
+        
+        return invoice
+        
     def action_confirm(self):
         self.state = 'confirm'
     
     def create_customer_invocie(self):
         if not self.line_ids:
             raise ValidationError(_("""You cannot create invoice without lines"""))
-        self.create_moves(invoice_type='out')
+        inv_id = self.create_moves(invoice_type='out')
         self.state = 'done'
+        return {
+            'name': _('Accont Move'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.move',
+            'res_id':inv_id.id
+            # 'domain': [('id', 'in', ids)],
+        }
     
     def create_vendor_bill(self):
         if not self.line_ids:
             raise ValidationError(_("""You cannot create bill without lines"""))
-        self.create_moves(invoice_type='in')
+        bill_id = self.create_moves(invoice_type='in')
+        return {
+            'name': _('Accont Move'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.move',
+            'res_id':bill_id.id
+            # 'domain': [('id', 'in', ids)],
+        }
 
 class ShipmentOrderLine(models.Model):
     _name = 'shipment.order.line'
