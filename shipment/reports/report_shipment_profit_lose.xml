@@ -36,7 +36,7 @@
                             <t t-set="number" t-value="1" />
                             <t t-set="bill" t-value="0" />
                             <t t-set="inv" t-value="0" />
-                            
+
                             <t t-foreach="result" t-as="o">
                                 <tr>
                                     <t t-set="final" t-value="0" />
@@ -48,14 +48,29 @@
                                     </td>
                                     <td style="text-align:left;">
                                         <t t-if="o.bill_id">
-                                            <t t-esc="o.bill_id.amount_total"/>
-                                            <t t-set="bill" t-value="bill + o.bill_id.amount_total" />
+                                            <t t-if="data['currency'] == 'paid'">
+                                                <t t-esc="o.bill_id.amount_total"/>
+                                                <t t-set="bill" t-value="bill + o.bill_id.amount_total" />
+                                            </t>
+                                            <t t-if="data['currency'] == 'company'">
+                                            <t t-set="amount_currency" t-value="o.bill_id.compute_currency(o.bill_id.amount_total,o.bill_id.currency_id,o.bill_id.invoice_date)" />
+                                                <t t-esc="amount_currency"/>
+                                                <t t-set="bill" t-value="bill + amount_currency" />
+                                            </t>
+
                                         </t>
                                     </td>
                                     <td>
                                         <t t-if="o.inv_id">
-                                            <t t-esc="o.inv_id.amount_total"/>
-                                            <t t-set="inv" t-value="inv + o.inv_id.amount_total" />
+                                            <t t-if="data['currency'] == 'paid'">
+                                                <t t-esc="o.inv_id.amount_total"/>
+                                                <t t-set="inv" t-value="inv + o.inv_id.amount_total" />
+                                            </t>
+                                            <t t-if="data['currency'] == 'company'">
+                                            <t t-set="amount_currency" t-value="o.inv_id.compute_currency(o.inv_id.amount_total,o.inv_id.currency_id,o.inv_id.invoice_date)" />
+                                                <t t-esc="amount_currency"/>
+                                                <t t-set="inv" t-value="inv + amount_currency" />
+                                            </t>
                                         </t>
                                     </td>
 
@@ -64,7 +79,7 @@
                                         <span t-esc="inv - bill"/>
 
                                     </td>
-    
+
                                     <t t-set="number" t-value="number + 1" />
                                 </tr>
 

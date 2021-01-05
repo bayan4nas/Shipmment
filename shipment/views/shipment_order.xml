@@ -35,25 +35,25 @@
 
             <div class="oe_title">
               <h1>
-                <field name="name" placeholder="Policy Number"/>
+                <field name="name" placeholder="Policy Number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
               </h1>
             </div>
             <group>
               <group>
-                <field name="customer_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
-                <field name="from_country_id"/>
-                <field name="date_order"/>
+                <field name="customer_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="from_country_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="date_order" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
               </group>
               <group>
-                <field name="vendor_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier'}" />
+                <field name="vendor_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier'}" attrs="{'readonly': [('state', '!=', 'draft')]}" />
 
-                <field name="to_country_id"/>
+                <field name="to_country_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
               </group>
             </group>
             <notebook>
               <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
               <page string="Order Lines" name="Order Lines">
-                <field name="line_ids">
+                <field name="line_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
                   <tree editable="bottom">
                     <field name="product_id"/>
                     <field name="qty"/>
