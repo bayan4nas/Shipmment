@@ -26,6 +26,12 @@ class CreateAppointment(models.TransientModel):
         comodel_name='shipment.order',
     )
     
+    
+    currency = fields.Selection(
+        string='Currency',
+        selection=[('company', 'Company Currency'), ('paid', 'Paid Currency')],default="company"
+    )
+    
 
     
 

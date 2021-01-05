@@ -8,7 +8,7 @@ class ShipmentOrder(models.Model):
     _name = 'shipment.order'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
     _description = 'Shipment Order'
-
+    _order = "date_order desc"
     name = fields.Char(string='Policy Number', required=True,)
     customer_id = fields.Many2one(
         string='Customer',
