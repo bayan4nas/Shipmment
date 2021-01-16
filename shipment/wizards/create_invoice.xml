@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="create_invoice_form" model="ir.ui.view">
+        <field name="name">create.inovice.wizard</field>
+        <field name="model">create.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Create Invoice">
+                
+                <footer>
+                    <button name="empty_invoice" string="Empty Invoice" type="object" class="btn-primary"/>
+                    <button name="invoice_line" string="Invoice Lines" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="create_invoice_action" model="ir.actions.act_window">
+        <field name="name">Create Invoice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">create.invoice</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="create_invoice_form"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

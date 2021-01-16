@@ -4,88 +4,117 @@
     <template id="profit_lose_report">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-                <div class="page">
-                    <div class="oe_structure"/>
-                    <div class="row">
-                        <span style="text-align:center;">From: <t t-esc="data['start']"/>
- To <t t-esc="data['end']"/>
-                    </span>
-                </div>
-                <div class="row">
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th style="text-align:left;">
-                                    <strong>Number </strong>
-                                </th>
-                                <th style="text-align:left;">
-                                    <strong>name </strong>
-                                </th>
-                                <th style="text-align:left;">
-                                    <strong>Vendor Bills </strong>
-                                </th>
-                                <th style="text-align:left;">
-                                    <strong>Customer Invoice </strong>
-                                </th>
-                                <th style="text-align:left;">
-                                    <strong>Profit And Lose</strong>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-set="number" t-value="1" />
-                            <t t-set="bill" t-value="0" />
-                            <t t-set="inv" t-value="0" />
+                <style type="text/css">
+                        @font-face {
+                            font-family: 'ae_AlMohanad';
+                            src: local('ae_AlMohanad'), local('ae_AlMohanad'),
+                            url('/shipment/static/fonts/ae_AlMohanad.ttf') format('truetype');
+                            }
+                            *{
+                                font-family: ae_AlMohanad;
+                            }
+                            .Center { 
+                                text-align :center;
+                            } 
+                </style>
 
-                            <t t-foreach="result" t-as="o">
+                <div class="page" style="font-size: 12;">
+                <br/>
+                <br/>
+                    <div class="Center">
+                        <p >From: <t t-esc="data['start']"/>
+ To <t t-esc="data['end']"/>
+                    </p>
+                </div>
+                <br/>
+                <div class="row" style="padding-left:16px;padding-right:16px;">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" style="margin-left:16px;margin-right:16px;border:solid 1px #eee">
+                            <thead style="background:grey;">
                                 <tr>
-                                    <t t-set="final" t-value="0" />
-                                    <td style="text-align:left;">
-                                        <t t-esc="number"/>
-                                    </td>
-                                    <td style="text-align:left;">
-                                        <t t-esc="o.name"/>
-                                    </td>
-                                    <td style="text-align:left;">
-                                        <t t-if="o.bill_id">
-                                            <t t-if="data['currency'] == 'paid'">
-                                                <t t-esc="o.bill_id.amount_total"/>
-                                                <t t-set="bill" t-value="bill + o.bill_id.amount_total" />
+                                    <th class="Center">
+                                        <strong>Number </strong>
+                                    </th>
+                                    <th class="Center">
+                                        <strong>name </strong>
+                                    </th>
+                                    <th class="Center">
+                                        <strong>Vendor Bills </strong>
+                                    </th>
+                                    <th class="Center">
+                                        <strong>Company</strong>
+                                    </th>
+                                    <th class="Center">
+                                        <strong>Customer Invoice </strong>
+                                    </th>
+                                    <th class="Center">
+                                        <strong>Profit And Lose</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="number" t-value="1" />
+                                <t t-set="bill" t-value="0" />
+                                <t t-set="inv" t-value="0" />
+                                 <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
+
+                                <t t-foreach="result" t-as="o">
+                                    <tr>
+                                        <t t-set="final" t-value="0" />
+                                        <td class="Center">
+                                            <t t-esc="number"/>
+                                        </td>
+                                        <td class="Center">
+                                            <t t-esc="o['name']"/>
+                                        </td>
+                                        <td class="Center">
+
+                                            <t t-if="data['currency'] == 'usd'">
+                                                <t t-set="amount_currency" t-value="request.env['account.move'].compute_currency(o['bill'],o['invoice_date'],o.currency_id.id,False)" />
+                                                <t t-esc="amount_currency"/>
+                                                <t t-set="bill" t-value="bill + amount_currency" />
                                             </t>
                                             <t t-if="data['currency'] == 'company'">
-                                            <t t-set="amount_currency" t-value="o.bill_id.compute_currency(o.bill_id.amount_total,o.bill_id.currency_id,o.bill_id.invoice_date)" />
+                                                <t t-set="amount_currency" t-value="request.env['account.move'].compute_currency(o['bill'],o['invoice_date'],company_currncey.id,True)" />
                                                 <t t-esc="amount_currency"/>
                                                 <t t-set="bill" t-value="bill + amount_currency" />
                                             </t>
 
-                                        </t>
-                                    </td>
-                                    <td>
-                                        <t t-if="o.inv_id">
-                                            <t t-if="data['currency'] == 'paid'">
-                                                <t t-esc="o.inv_id.amount_total"/>
-                                                <t t-set="inv" t-value="inv + o.inv_id.amount_total" />
-                                            </t>
-                                            <t t-if="data['currency'] == 'company'">
-                                            <t t-set="amount_currency" t-value="o.inv_id.compute_currency(o.inv_id.amount_total,o.inv_id.currency_id,o.inv_id.invoice_date)" />
+
+                                        </td>
+                                        <td class="Center">
+                                            <t t-esc="o['company']"/>
+                                        </td>
+                                        <td class="Center">
+
+                                            <t t-if="data['currency'] == 'usd'">
+                                                <t t-set="amount_currency" t-value="request.env['account.move'].compute_currency(o['invoice'],o['invoice_date'],o.currency_id.id,False)" />
                                                 <t t-esc="amount_currency"/>
                                                 <t t-set="inv" t-value="inv + amount_currency" />
                                             </t>
-                                        </t>
-                                    </td>
+                                            <t t-if="data['currency'] == 'company'">
+                                                <t t-set="amount_currency" t-value="request.env['account.move'].compute_currency(o['bill'],o['invoice_date'],company_currncey.id,True)" />
+                                                <t t-esc="amount_currency"/>
+                                                <t t-set="inv" t-value="inv + amount_currency" />
 
-                                    <td style="text-align:left;">
+                                            </t>
 
-                                        <span t-esc="inv - bill"/>
+                                        </td>
 
-                                    </td>
+                                        <td class="Center">
 
-                                    <t t-set="number" t-value="number + 1" />
-                                </tr>
+                                            <span t-esc="inv - bill"/>
 
-                            </t>
-                        </tbody>
-                    </table>
+                                        </td>
+
+                                        <t t-set="number" t-value="number + 1" />
+                                    </tr>
+
+                                </t>
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
             </div>
         </t>

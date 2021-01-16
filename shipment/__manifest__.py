@@ -26,11 +26,17 @@
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'wizards/profit_lose.xml',
+        'wizards/create_invoice.xml',
         'reports/report_shipment_profit_lose.xml',
-        'reports/report.xml', 
+        'reports/report.xml',
+        'reports/external_layout.xml',
+        'reports/report_invoice_shipment.xml',
         'views/shipment_order.xml',
         'views/account_move.xml',
         'views/menus.xml',
+        'views/res_bank.xml',
+        # 'views/template.xml',
+        
         
     ],
     # only loaded in demonstration mode

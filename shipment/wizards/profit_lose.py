@@ -29,7 +29,7 @@ class CreateAppointment(models.TransientModel):
     
     currency = fields.Selection(
         string='Currency',
-        selection=[('company', 'Company Currency'), ('paid', 'Paid Currency')],default="company"
+        selection=[('company', 'Company Currency'), ('usd', 'USD')],default="company"
     )
     
 
