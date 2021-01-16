@@ -26,12 +26,24 @@
             <field name="invoiced" invisible="1" />
             <field name="billed" invisible="1" />
             <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
-            <button name="create_customer_invocie" type="object" string="Create Customer Invoice" states="confirm" class="oe_highlight"  attrs="{'invisible': ['|',('invoiced', '=', True)]}"/>
-            <button name="create_vendor_bill" type="object" string="Create Vendor Bill" class="oe_highlight" states="confirm" attrs="{'invisible': ['|',('billed', '=', True)]}"/>
+            <button name="action_close" string="Close" type="object" class="oe_highlight" states="confirm"/>
+            <button name="create_customer_invocie" type="object" string="Create Customer Invoice" states="confirm" class="oe_highlight" />
+            <button name="create_vendor_bill" type="object" string="Create Vendor Bill" class="oe_highlight" states="confirm" />
+            <!-- attrs="{'invisible': ['|',('invoiced', '=', True)]}" -->
 
             <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
           </header>
           <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="open_vendor_bills" class="oe_stat_button" type="object" icon="fa-money">
+                <field string="Bills" name="bills_count" widget="statinfo"/>
+              </button>
+
+              <button name="open_customer_invoices" class="oe_stat_button" type="object" icon="fa-money">
+                <field string="Invoices" name="invoices_count" widget="statinfo"/>
+              </button>
+
+            </div>
 
             <div class="oe_title">
               <h1>
@@ -64,8 +76,8 @@
               <page name="Info" string="Other Info">
                 <group>
                   <group string="Accounting" name ="accounting_info_group">
-                    <field name="inv_id" readonly="1" attrs="{'invisible': [('invoiced', '!=', True)]}"/>
-                    <field name="bill_id" readonly="1" attrs="{'invisible': [('billed', '!=', True)]}"/>
+                    <!-- <field name="inv_id" readonly="1" attrs="{'invisible': [('invoiced', '!=', True)]}"/>
+                    <field name="bill_id" readonly="1" attrs="{'invisible': [('billed', '!=', True)]}"/> -->
                   </group>
                 </group>
                 <field name="narration" placeholder="Add an internal note..." nolabel="1" height="50"/>

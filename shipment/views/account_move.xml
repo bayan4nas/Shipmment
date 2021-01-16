@@ -7,9 +7,17 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <field name="invoice_user_id" position="after">
-                <field name="policy_id"  />
-
+                <field name="policy_id" />
+                <field name="company_currency_id" />
+                
             </field>
+            <field name="ref" position="after">
+                <field name="charge" />
+                <field name="charge_amount"  widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+            </field>
+           <xpath expr="//field[@name='invoice_partner_bank_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+            </xpath>
         </field>
     </record>
 

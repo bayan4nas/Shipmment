@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-
-    <report
-        id="action_profit_lose_report"
-        string="Profit and Lose"
-        model="profit.lose.report"
-        report_type="qweb-pdf"
-        name="shipment.profit_lose_report"
+    <!-- report from wizard to print policies and its bills and Invoices -->
+    <report 
+        id="action_profit_lose_report" 
+        string="Profit and Lose" 
+        model="profit.lose.report" 
+        report_type="qweb-pdf" 
+        name="shipment.profit_lose_report" 
         file="shipment.profit_lose_report"/>
 
+    <!-- override original report invoice with payment to add menu false to make it invisible -->
+    <report
+            id="account.account_invoices"
+            model="account.move"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="account.report_invoice_with_payments"
+            file="account.report_invoice_with_payments"
+            attachment="(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            menu="False"
+        />
     
-
+     <report
+            id="account_shipment_invoices"
+            model="account.move"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="shipment.report_invoice_shipment"
+            file="shipment.report_invoice_shipment"
+            attachment="(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+        />
 </odoo>

@@ -9,7 +9,14 @@ class ShipmentOrder(models.Model):
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
     _description = 'Shipment Order'
     _order = "date_order desc"
+
+    def get_moves_count(self):
+        moves = self.env['account.move'].search([('policy_id', '=', self.id)])
+        self.bills_count = len(moves.filtered(lambda b: b.type == 'in_invoice'))
+        self.invoices_count = len(moves.filtered(lambda i: i.type == 'out_invoice'))
+
     name = fields.Char(string='Policy Number', required=True,)
+
     customer_id = fields.Many2one(
         string='Customer',
         comodel_name='res.partner',
@@ -52,14 +59,20 @@ class ShipmentOrder(models.Model):
         inverse_name='shipment_id',
     )
     
-    inv_id = fields.Many2one(
-        string='Invoive Ref',
-        comodel_name='account.move',
-    )
-    bill_id = fields.Many2one(
-        string='Bill Ref',
-        comodel_name='account.move',
-    )
+    
+    
+    
+    # inv_id = fields.Many2one(
+    #     string='Invoive Ref',
+    #     comodel_name='account.move',
+    #     copy=False
+    # )
+    # bill_id = fields.Many2one(
+    #     string='Bill Ref',
+    #     comodel_name='account.move',
+    #     copy=False
+        
+    # )
     
     narration = fields.Text(
         string='narration',
@@ -72,6 +85,8 @@ class ShipmentOrder(models.Model):
         string='bill',
     )
     
+    bills_count = fields.Integer(string='Bills', compute='get_moves_count')
+    invoices_count = fields.Integer(string='Invoices', compute='get_moves_count')
     
     
     # @api.model
@@ -82,63 +97,69 @@ class ShipmentOrder(models.Model):
     #     result = super(ShipmentOrder, self).create(vals)
     #     return result
 
-    def create_moves(self,invoice_type):
-        """call this method with type 'in' t create bill or /
-        type 'out' to create invocie"""
-
-        invoice_vals = {
-        'partner_id': self.customer_id.id if invoice_type == 'out' else self.vendor_id.id,
-        'state': 'draft',
-        'policy_id':self.id,
-        'type': 'out_invoice' if invoice_type == 'out' else 'in_invoice',
-        'invoice_date': self.date_order,
-        'invoice_line_ids': [(0, 0, {
-            'product_id':line.product_id.id,
-            'name': line.name,
-            'quantity': line.qty,
-            'price_unit': 0,
-            }) for line in self.line_ids],
+   
+    def open_vendor_bills(self):
+        return {
+            'name': _('Vendor Bills'),
+            'domain': [('policy_id', '=', self.id),('type', '=', 'in_invoice')],
+            'view_type': 'form',
+            'res_model': 'account.move',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
         }
-        invoice = self.env['account.move'].sudo().create(invoice_vals)
-        if invoice_type == 'out':
-            self.write({'inv_id':invoice.id,'invoiced':True})
-            
-        else:
-            self.write({'bill_id':invoice.id,'billed':True})
-        
-        return invoice
+
+    def open_customer_invoices(self):
+        return {
+            'name': _('Customer Invoices'),
+            'domain': [('policy_id', '=', self.id),('type', '=', 'out_invoice')],
+            'view_type': 'form',
+            'res_model': 'account.move',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
         
     def action_confirm(self):
         self.state = 'confirm'
+        
     
-    def create_customer_invocie(self):
-        if not self.line_ids:
-            raise ValidationError(_("""You cannot create invoice without lines"""))
-        inv_id = self.create_moves(invoice_type='out')
+    def action_close(self):
         self.state = 'done'
+
+    def create_customer_invocie(self):
+        #this method is called to open wizard,
+        # of how user wants to create the customer invoice
+        context = dict(self.env.context)
+        context['invoice_type'] = 'out'
         return {
-            'name': _('Accont Move'),
+            'name': "Create Invoice",
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'account.move',
-            'res_id':inv_id.id
-            # 'domain': [('id', 'in', ids)],
+            'res_model': 'create.invoice',
+            'view_id': self.env.ref('shipment.create_invoice_form').id,
+            'target': 'new',
+            'context': context
         }
+        
     
     def create_vendor_bill(self):
-        if not self.line_ids:
-            raise ValidationError(_("""You cannot create bill without lines"""))
-        bill_id = self.create_moves(invoice_type='in')
+         #this method is called to open wizard,
+        # of how user wants to create the vendor invoice
+        context = dict(self.env.context)
+        context['invoice_type'] = 'in'
         return {
-            'name': _('Accont Move'),
+            'name': "Create Invoice",
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'account.move',
-            'res_id':bill_id.id
-            # 'domain': [('id', 'in', ids)],
+            'res_model': 'create.invoice',
+            'view_id': self.env.ref('shipment.create_invoice_form').id,
+            'target': 'new',
+            'context': context
         }
+
 
 class ShipmentOrderLine(models.Model):
     _name = 'shipment.order.line'

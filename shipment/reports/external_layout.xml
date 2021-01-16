@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="external_layout_standard_inherit" inherit_id="web.external_layout_standard">
+        <div t-attf-class="header o_company_#{company.id}_layout" position="replace">
+            <div class="header">
+                <style type="text/css">
+                        @font-face {
+                            font-family: 'ae_AlMohanad';
+                            src: local('ae_AlMohanad'), local('ae_AlMohanad'),
+                            url('/shipment/static/fonts/ae_AlMohanad.ttf') format('truetype');
+                            }
+                            *{
+                            font-family: ae_AlMohanad;
+                            }
+                           <!-- span{
+                        border-bottom:1px solid #000;
+                        text-decoration:underline;
+                        display:inline-block;
+                        } -->
+                        
+                         
+                </style>
+
+                <!-- style="background:#3a4b85;" -->
+                <!-- <div class="container" style="background:#3a4b85;"> -->
+                    <div class="row" style="background:grey;">
+                        <div class="col-4 pull-left">
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 100px;margin-top:20px" alt="Logo"/>
+                        </div>
+                        <div class="col-8">
+                            <div class="pull-right" style="margin-top:70px;">
+                                <!-- style="color:white;" -->
+                                <h4 >
+                                    <span>
+                                        <t t-esc="company.name"/>
+                                    </span>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row" style="background:#3a4b85;">
+                        <div class="col-2"></div>
+                        <div class="col-10" style="margin-top:20px;margin-bottom:20px;text-align:center">
+                            <h5>
+                            Tel : <t t-esc="company.phone"/>
+ , 
+                            Email : <t t-esc="company.email"/>
+                        </h5>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    <!-- </div> -->
+</template>
+</odoo>
