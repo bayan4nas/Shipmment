@@ -30,13 +30,13 @@ class AccountMove(models.Model):
        #call the method from report with amount , currency and date to get amount in company currency and vis versa
         company_currency = self.env.user.company_id.currency_id
         currency_id = self.env['res.currency'].search([('id', '=', currency_id)])
-        if company_currency != currency_id:
-            if is_company:
-                amount_convert = company_currency._convert(total, currency_id, self.env.user.company_id, date_order or fields.Date.today())
+        # if company_currency.id == currency_id.id:
+        if is_company:
+            amount_convert = company_currency._convert(total, currency_id, self.env.user.company_id, date_order or fields.Date.today())
                 # amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency )
                 #     return round(amount_convert,3)
                 # amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency)
-                return round(amount_convert,3)
-            amount_convert = currency_id._convert(total, company_currency, self.env.user.company_id, date_order or fields.Date.today())
+            return round(amount_convert,3)
+        # amount_convert = currency_id._convert(total, company_currency, self.env.user.company_id, date_order or fields.Date.today())
         return total
        
