@@ -80,8 +80,8 @@
                                     
                                     <tr>
                                         <!-- <td><t t-esc="line.product_id.name"/></td> -->
-                                        <td><t t-if="o.policy_id.to_country_id"><t t-esc="o.policy_id.to_country_id.name"></t></t></td>
-                                        <td><t t-if="o.policy_id.from_country_id"><t t-esc="o.policy_id.from_country_id.name"></t></t></td>
+                                        <td><t t-if="o.policy_id"><t t-if="o.policy_id.to_country_id"><t t-esc="o.policy_id.to_country_id.name"></t></t></t></td>
+                                        <td><t t-if="o.policy_id"><t t-if="o.policy_id.from_country_id"><t t-esc="o.policy_id.from_country_id.name"></t></t></t></td>
                                         <td><t t-esc="line.product_id.name"/></td>
                                         <td><t t-esc="line.price_unit"/></td>
                                         <td><t t-esc="line.quantity"/></td>
@@ -92,8 +92,8 @@
                                 <tr rowsapn="2">
 
                                     <!-- <td colspan="3"></td> -->
-                                    <td >Gross Payment charge</td>
-                                    <td colspan="6" style="text-align:center;"><t t-esc="o.charge"/></td>
+                                    <td ><t t-esc="o.charge"/></td>
+                                    <td colspan="6" style="text-align:center;"></td>
                                      <td colspan="2"><t t-esc="o.charge_amount" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/></td>
                                 </tr>
                                 <tr rowsapn="2">
