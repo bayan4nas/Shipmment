@@ -32,10 +32,10 @@ class AccountMove(models.Model):
         currency_id = self.env['res.currency'].search([('id', '=', currency_id)])
         
         if company_currency != currency_id:
-            if is_company:
-                amount_convert = company_currency.with_context(date=date_order).compute(total,currency_id )
-                return round(amount_convert,3)
-            amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency)
-            return round(amount_convert,3)
+            # if is_company:
+            amount_convert = company_currency.with_context(date=date_order).compute(total,currency_id )
+            #     return round(amount_convert,3)
+            # amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency)
+            # return round(amount_convert,3)
         return total
        
