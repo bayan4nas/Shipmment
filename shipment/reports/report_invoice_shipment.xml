@@ -19,134 +19,165 @@
                             }
                            
                     </style>
-                     
+
                     <div class="page" style="font-size:12px;">
                         <br/>
                         <br/>
-                       <div id="container" style="border:1px solid black;margin-left:5%;margin-right:5%;margin-top:3%;margin-bottom:2%;padding-left:5%;padding-right:5%;padding-top:3%;padding-bottom:2%;">
-                        <div class="row" style="margin-left:5%;margin-right:5%;margin-top:3%;margin-bottom:2%;padding-left:5%;padding-right:5%;padding-top:3%;padding-bottom:2%;">
-                            <div class="col-8 pull-left" style="margin-left:16px;margin-right:16px;">
-                                <span>  <t t-esc="o.name"/> </span>
-                            </div>
-                            <div class="col-4">
-                                <div class="pull-right" style="margin-left:16px;margin-right:16px;">
-
+                        <div id="container" style="border:1px solid black;margin-left:5%;margin-right:5%;margin-top:3%;margin-bottom:2%;padding-left:5%;padding-right:5%;padding-top:3%;padding-bottom:2%;">
+                            <div class="row" style="margin-left:5%;margin-right:5%;margin-top:3%;margin-bottom:2%;padding-left:5%;padding-right:5%;padding-top:3%;padding-bottom:2%;">
+                                <div class="col-8 pull-left" style="margin-left:16px;margin-right:16px;">
                                     <span>
-                                       Date : <t t-esc="o.invoice_date"/>
+                                        <t t-esc="o.name"/>
                                     </span>
+                                </div>
+                                <div class="col-4">
+                                    <div class="pull-right" style="margin-left:16px;margin-right:16px;">
+
+                                        <span>
+                                       Date : <t t-esc="o.invoice_date"/>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+
+                            <div class="row">
+                                <div class="col-12" style="margin-left:16px;margin-right:16px;">
+
+                                    <p >
+                                        <u> To : <t t-esc="o.partner_id.name"/>
+                                        </u>
+                                    </p>
+
+                                    <u>
+                                        <p >
+                                            <u>   B/LNO : <t t-esc="o.policy_id.name"/>
+                                            </u>
+                                        </p>
+                                    </u>
 
                                 </div>
                             </div>
-                        </div>
-                        <br/>
-                         <br/>
+                            <br/>
 
-                        <div class="row">
-                            <div class="col-12" style="margin-left:16px;margin-right:16px;">
-                                
-                                <p >
-                                      <u> To : <t t-esc="o.partner_id.name"/></u>
-                                </p>
-                                
-                                <u>
-                                 <p >
-                                    <u>   B/LNO : <t t-esc="o.policy_id.name"/></u>
-                                </p>
-                                </u>
-                                
-                            </div>
-                        </div>
-                         <br/>
-
-                        <table class="table table-bordered" style="margin-left:16px;margin-right:16px;border:solid 1px #eee">
-                            <thead style="background:grey;">
-                                <tr>
-                                    <!-- <th>B/LNO</th> -->
-                                    <th>POL</th>
-                                    <th>POD</th>
-                                    <th>SIZE</th>
-                                    <th>RATE</th>
-                                    <th>UNIT</th>
-                                    <th colspan="2">TTL VALUE/USD</th>
-                                    <th colspan="2">TTL VALUE/AED</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="o.invoice_line_ids" t-as="line">
-                                    
-                                    
-                                    
-                                    <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
-                                    
+                            <table class="table table-bordered" style="margin-left:16px;margin-right:16px;border:solid 1px #eee">
+                                <thead style="background:grey;">
                                     <tr>
-                                        <!-- <td><t t-esc="line.product_id.name"/></td> -->
-                                        <td><t t-if="o.policy_id"><t t-if="o.policy_id.to_country_id"><t t-esc="o.policy_id.to_country_id.name"></t></t></t></td>
-                                        <td><t t-if="o.policy_id"><t t-if="o.policy_id.from_country_id"><t t-esc="o.policy_id.from_country_id.name"></t></t></t></td>
-                                        <td><t t-esc="line.product_id.name"/></td>
-                                        <td><t t-esc="line.price_unit"/></td>
-                                        <td><t t-esc="line.quantity"/></td>
-                                        <td colspan="2"> 
-                                        <t t-esc="o.currency_id.name"/>
-                                        
-                                        <t t-if="o.currency_id.id != company_currncey">
-                                            
-                                         <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , o.currency_id.id,False)"/>
-                                         </t>
-                                         
-                                         </td>
-                                          
+                                        <!-- <th>B/LNO</th> -->
+                                        <th>POL</th>
+                                        <th>POD</th>
+                                        <th>SIZE</th>
+                                        <th>RATE</th>
+                                        <th>UNIT</th>
+                                        <th colspan="2">TTL VALUE/USD</th>
+                                        <th colspan="2">TTL VALUE/AED</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.invoice_line_ids" t-as="line">
+
+
+
+                                        <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
+
+                                        <tr>
+                                            <!-- <td><t t-esc="line.product_id.name"/></td> -->
+                                            <td>
+                                                <t t-if="o.policy_id">
+                                                    <t t-if="o.policy_id.to_country_id">
+                                                        <t t-esc="o.policy_id.to_country_id.name"></t>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-if="o.policy_id">
+                                                    <t t-if="o.policy_id.from_country_id">
+                                                        <t t-esc="o.policy_id.from_country_id.name"></t>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.product_id.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.price_unit"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.quantity"/>
+                                            </td>
+                                            <td colspan="2">
+                                                <t t-esc="o.currency_id.name"/>
+
+                                                <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , o.currency_id.id,False)"/>
+
+                                            </td>
+
+                                            <td colspan="2">
+                                                <t t-esc="company_currncey.name"/>
+
+                                                <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , company_currncey.id,True)"/>
+
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr rowsapn="2">
+
+                                        <!-- <td colspan="3"></td> -->
+                                        <td >
+                                            <t t-esc="o.charge"/>
+                                        </td>
+                                        <td colspan="6" style="text-align:center;"></td>
                                         <td colspan="2">
-                                         <t t-esc="company_currncey.name"/> 
-                                        <t t-if="o.currency_id.id == company_currncey">
-                                            
-                                         <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , company_currncey.id,True)"/>
-                                         </t>
-                                       
-                                        
+                                            <t t-esc="o.charge_amount" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/>
                                         </td>
                                     </tr>
-                                </t>
-                                <tr rowsapn="2">
+                                    <tr rowsapn="2">
+                                        <t t-set="final" t-value="o.amount_total + o.charge_amount"/>
+                                        <!-- <td colspan="3"></td> -->
+                                        <td colspan="7">Total</td>
+                                        <td colspan="2">
+                                            <t t-esc="final" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
 
-                                    <!-- <td colspan="3"></td> -->
-                                    <td ><t t-esc="o.charge"/></td>
-                                    <td colspan="6" style="text-align:center;"></td>
-                                     <td colspan="2"><t t-esc="o.charge_amount" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/></td>
-                                </tr>
-                                <tr rowsapn="2">
-                                 <t t-set="final" t-value="o.amount_total + o.charge_amount"/>
-                                    <!-- <td colspan="3"></td> -->
-                                    <td colspan="7">Total</td>
-                                    <td colspan="2"><t t-esc="final" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/></td>
-                                </tr>
-                            </tbody>
+                            </table>
+                            <br/>
+                            <br/>
+                            <p>
+                                <u>Account Details</u>
+                            </p>
+                            <p>Account Name : <t t-esc="o.invoice_partner_bank_id.acc_holder_name"/>
+                            </p>
+                            <p>Account Number : <t t-esc="o.invoice_partner_bank_id.acc_number"/>
+                            </p>
+                            <p>Iban No : <t t-esc="o.invoice_partner_bank_id.bank_id.iban_no"/>
+                            </p>
+                            <p>Swift Code : <t t-esc="o.invoice_partner_bank_id.bank_id.bic"/>
+                            </p>
+                            <p>Currency : <t t-esc="o.invoice_partner_bank_id.currency_id.name"/>
+                            </p>
+                            <p>Bank Name : <t t-esc="o.invoice_partner_bank_id.bank_id.name"/>
+                            </p>
+                            <p>Branch : <t t-esc="o.invoice_partner_bank_id.bank_id.branch"/>
+                            </p>
 
-                        </table>
-                        <br/>
-                         <br/>
-                        <p><u>Account Details</u></p>
-                        <p>Account Name : <t t-esc="o.invoice_partner_bank_id.acc_holder_name"/></p>
-                        <p>Account Number : <t t-esc="o.invoice_partner_bank_id.acc_number"/> </p>
-                        <p>Iban No : <t t-esc="o.invoice_partner_bank_id.bank_id.iban_no"/></p>
-                        <p>Swift Code : <t t-esc="o.invoice_partner_bank_id.bank_id.bic"/></p>
-                        <p>Currency : <t t-esc="o.invoice_partner_bank_id.currency_id.name"/></p>
-                        <p>Bank Name : <t t-esc="o.invoice_partner_bank_id.bank_id.name"/></p>
-                        <p>Branch : <t t-esc="o.invoice_partner_bank_id.bank_id.branch"/></p>
+                            <div class="row">
+                                <div class="col-3 pull-left">
+                                </div>
+                                <div class="col-6">
+                                    <div class="pull-right" style="margin-top:5px;">
 
-                        <div class="row">
-                            <div class="col-3 pull-left">
-                            </div>
-                            <div class="col-6">
-                                <div class="pull-right" style="margin-top:5px;">
+                                        <span>
+                                            <t t-esc="request.env.user.company_id.name"/>
+                                        </span>
 
-                                    <span>
-                                       <t t-esc="request.env.user.company_id.name"/>
-                                    </span>
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                         </div>
 
                     </div>
                 </t>
