@@ -85,8 +85,25 @@
                                         <td><t t-esc="line.product_id.name"/></td>
                                         <td><t t-esc="line.price_unit"/></td>
                                         <td><t t-esc="line.quantity"/></td>
-                                        <td colspan="2"> <t t-esc="o.currency_id.name"/> <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , o.currency_id.id,False)"/></td>
-                                        <td colspan="2"> <t t-esc="company_currncey.name"/> <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , company_currncey.id,True)"/></td>
+                                        <td colspan="2"> 
+                                        <t t-esc="o.currency_id.name"/>
+                                        
+                                        <t t-if="o.currency_id.id != company_currncey">
+                                            
+                                         <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , o.currency_id.id,False)"/>
+                                         </t>
+                                         
+                                         </td>
+                                          
+                                        <td colspan="2">
+                                         <t t-esc="company_currncey.name"/> 
+                                        <t t-if="o.currency_id.id == company_currncey">
+                                            
+                                         <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , company_currncey.id,True)"/>
+                                         </t>
+                                       
+                                        
+                                        </td>
                                     </tr>
                                 </t>
                                 <tr rowsapn="2">
