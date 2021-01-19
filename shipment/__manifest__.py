@@ -33,8 +33,10 @@
         'reports/report_invoice_shipment.xml',
         'views/shipment_order.xml',
         'views/account_move.xml',
+        'views/payment_charge_type.xml',
         'views/menus.xml',
         'views/res_bank.xml',
+       
         # 'views/template.xml',
         
         

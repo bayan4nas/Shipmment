@@ -81,7 +81,10 @@
 
 
                                         <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
-
+                                        
+                                        <t t-set="currency_amount" t-value="o.compute_currency_with_rate(o,line.price_subtotal,o.charge_amount , o.rate_currency_id.id)" />
+                                         <t t-set="result" t-value="0"/>
+                                        
                                         <tr>
                                             <!-- <td><t t-esc="line.product_id.name"/></td> -->
                                             <td>
@@ -108,37 +111,45 @@
                                                 <t t-esc="line.quantity"/>
                                             </td>
                                             <td colspan="2">
+
                                                 <t t-esc="o.currency_id.name"/>
 
-                                                <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , o.currency_id.id,False)"/>
+                                                <t t-esc="line.price_subtotal"/>
 
                                             </td>
 
                                             <td colspan="2">
-                                                <t t-esc="company_currncey.name"/>
+                                                <t t-if="o.currency_id.id != o.rate_currency_id.id">
+                                                    <t t-esc="o.rate_currency_id.name"/>
 
-                                                <t t-esc="o.compute_currency(line.price_subtotal,o.invoice_date , company_currncey.id,True)"/>
+                                                    <t t-esc="currency_amount"/>
+                                                    <t t-set="result" t-value="result + currency_amount"/>
+                                                </t>
+                                                <t t-if="o.currency_id.id == o.rate_currency_id.id">
+                                                    <t t-esc="o.rate_currency_id.name"/>
 
+                                                    <t t-esc="line.price_subtotal"/>
+                                                </t>
                                             </td>
                                         </tr>
                                     </t>
                                     <tr rowsapn="2">
 
                                         <!-- <td colspan="3"></td> -->
-                                        <td >
-                                            <t t-esc="o.charge"/>
+                                        <td colspan="3">
+                                            <t t-esc="o.charge_id.name"/>
                                         </td>
-                                        <td colspan="6" style="text-align:center;"></td>
+                                        <td colspan="3" style="text-align:center;"></td>
                                         <td colspan="2">
                                             <t t-esc="o.charge_amount" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/>
                                         </td>
                                     </tr>
                                     <tr rowsapn="2">
-                                        <t t-set="final" t-value="o.amount_total + o.charge_amount"/>
-                                        <!-- <td colspan="3"></td> -->
+
+                                       
                                         <td colspan="7">Total</td>
                                         <td colspan="2">
-                                            <t t-esc="final" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/>
+                                            <t t-esc="result"/>
                                         </td>
                                     </tr>
                                 </tbody>
