@@ -76,6 +76,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <t t-set="result" t-value="0"/>
                                     <t t-foreach="o.invoice_line_ids" t-as="line">
 
 
@@ -83,7 +84,7 @@
                                         <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
                                         
                                         <t t-set="currency_amount" t-value="o.compute_currency_with_rate(o,line.price_subtotal,o.charge_amount , o.rate_currency_id.id)" />
-                                         <t t-set="result" t-value="0"/>
+                                         
                                         
                                         <tr>
                                             <!-- <td><t t-esc="line.product_id.name"/></td> -->
@@ -121,7 +122,7 @@
                                             <td colspan="2">
                                                 <t t-if="o.currency_id.id != o.rate_currency_id.id">
                                                     <t t-esc="o.rate_currency_id.name"/>
-
+                                                    <t t-set="currency_amount" t-value="o.compute_currency_with_rate(o,line.price_subtotal,o.charge_amount , o.rate_currency_id.id)" />
                                                     <t t-esc="currency_amount"/>
                                                     <t t-set="result" t-value="result + currency_amount"/>
                                                 </t>
@@ -140,9 +141,9 @@
                                             <t t-esc="o.charge_id.name"/>
                                         </td>
                                         <td colspan="3" style="text-align:center;"></td>
-                                        <td colspan="2">
+                                        <!-- <td colspan="2">
                                             <t t-esc="o.charge_amount" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <tr rowsapn="2">
 
