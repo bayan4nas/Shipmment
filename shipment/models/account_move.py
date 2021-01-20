@@ -35,8 +35,19 @@ class AccountMove(models.Model):
         default=lambda self: self.env.user.company_id.currency_id
         
     )
+
+    inv_seq = fields.Char(string='Appointment ID', required=True, copy=False, readonly=True,
+                       index=True, default=lambda self: _('New'))
+    @api.model
+    def create(self, vals):
+        # overriding the create method to add the sequence
+        if vals.get('inv_seq', _('New')) == _('New'):
+            vals['inv_seq'] = self.env['ir.sequence'].next_by_code('account.move.seq') or _('New')
+        result = super(AccountMove, self).create(vals)
+        return result
     
-   
+        
+
     
     def compute_currency_with_rate(self,mve,total,rate,currency_id ):
         amount = rate * total

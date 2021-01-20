@@ -8,7 +8,7 @@
             <form string="Create Invoice">
                 
                 <footer>
-                    <button name="empty_invoice" string="Empty Invoice" type="object" class="btn-primary"/>
+                    <!-- <button name="empty_invoice" string="Empty Invoice" type="object" class="btn-primary"/> -->
                     <button name="invoice_line" string="Invoice Lines" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>

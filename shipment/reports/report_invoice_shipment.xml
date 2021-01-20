@@ -27,7 +27,7 @@
                             <div class="row" style="margin-left:5%;margin-right:5%;margin-top:3%;margin-bottom:2%;padding-left:5%;padding-right:5%;padding-top:3%;padding-bottom:2%;">
                                 <div class="col-8 pull-left" style="margin-left:16px;margin-right:16px;">
                                     <span>
-                                        <t t-esc="o.name"/>
+                                        <!-- <t t-esc="o.name"/> -->
                                     </span>
                                 </div>
                                 <div class="col-4">
@@ -42,6 +42,14 @@
                             </div>
                             <br/>
                             <br/>
+                            <center>
+                                <t t-if="o.state == 'draft'">
+                                    <t t-esc="o.inv_seq"/>
+                                </t>
+                                <t t-if="o.state != 'draft'">
+                                    <t t-esc="o.name"/>
+                                </t>
+                            </center>
 
                             <div class="row">
                                 <div class="col-12" style="margin-left:16px;margin-right:16px;">
@@ -62,6 +70,7 @@
                             </div>
                             <br/>
 
+
                             <table class="table table-bordered" style="margin-left:16px;margin-right:16px;border:solid 1px #eee">
                                 <thead style="background:grey;">
                                     <tr>
@@ -76,16 +85,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <t t-set="result" t-value="0"/>
+                                    <t t-set="result" t-value="0"/>
                                     <t t-foreach="o.invoice_line_ids" t-as="line">
 
 
 
                                         <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
-                                        
+
                                         <t t-set="currency_amount" t-value="o.compute_currency_with_rate(o,line.price_subtotal,o.charge_amount , o.rate_currency_id.id)" />
-                                         
-                                        
+
+
                                         <tr>
                                             <!-- <td><t t-esc="line.product_id.name"/></td> -->
                                             <td>
@@ -147,7 +156,7 @@
                                     </tr>
                                     <tr rowsapn="2">
 
-                                       
+
                                         <td colspan="7">Total</td>
                                         <td colspan="2">
                                             <t t-esc="result"/>
@@ -177,17 +186,26 @@
                             </p>
 
                             <div class="row">
-                                <div class="col-3 pull-left">
-                                </div>
-                                <div class="col-6">
-                                    <div class="pull-right" style="margin-top:5px;">
-
+                                <div class="col-12">
+                                    <div class="pull-right">
+                                        <img src='/shipment/static/src/img/STAMP_COPY.png' style="max-height: 45px;"/>
+                                    </div>
+                                    <div class="pull-left">
                                         <span>
                                             <t t-esc="request.env.user.company_id.name"/>
                                         </span>
 
                                     </div>
+
                                 </div>
+                                <!-- <div class="col-6">
+                                    <div class="pull-left">
+                                        <span>
+                                            <t t-esc="request.env.user.company_id.name"/>
+                                        </span>
+                                    </div>
+                                </div> -->
+
                             </div>
                         </div>
 
