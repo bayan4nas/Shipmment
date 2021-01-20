@@ -50,7 +50,18 @@
                                     <t t-esc="o.name"/>
                                 </t>
                             </center>
+                             <div class="row">
+                                <div class="col-12" style="margin-left:16px;margin-right:16px;">
 
+                                    <p >
+                                         <t t-esc="o.charge_id.name"/>
+                                    </p>
+
+                                 
+
+                                </div>
+                            </div>
+                            <br/>
                             <div class="row">
                                 <div class="col-12" style="margin-left:16px;margin-right:16px;">
 
@@ -143,17 +154,14 @@
                                             </td>
                                         </tr>
                                     </t>
-                                    <tr rowsapn="2">
+                                    <!-- <tr rowsapn="2">
 
-                                        <!-- <td colspan="3"></td> -->
                                         <td colspan="3">
                                             <t t-esc="o.charge_id.name"/>
                                         </td>
                                         <td colspan="3" style="text-align:center;"></td>
-                                        <!-- <td colspan="2">
-                                            <t t-esc="o.charge_amount" t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'/>
-                                        </td> -->
-                                    </tr>
+                                        
+                                    </tr> -->
                                     <tr rowsapn="2">
 
 
