@@ -43,21 +43,21 @@
                             <br/>
                             <br/>
                             <center>
-                                <t t-if="o.state == 'draft'">
-                                    <t t-esc="o.inv_seq"/>
-                                </t>
-                                <t t-if="o.state != 'draft'">
-                                    <t t-esc="o.name"/>
-                                </t>
+                                <p >
+                                    <t t-esc="o.charge_id.name"/>
+                                </p>
                             </center>
-                             <div class="row">
+                            <div class="row">
                                 <div class="col-12" style="margin-left:16px;margin-right:16px;">
+                                    <t t-if="o.state == 'draft'">
+                                        <t t-esc="o.inv_seq"/>
+                                    </t>
+                                    <t t-if="o.state != 'draft'">
+                                        <t t-esc="o.name"/>
+                                    </t>
 
-                                    <p >
-                                         <t t-esc="o.charge_id.name"/>
-                                    </p>
 
-                                 
+
 
                                 </div>
                             </div>
