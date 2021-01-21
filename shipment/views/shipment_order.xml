@@ -1,5 +1,24 @@
 <odoo>
   <data>
+
+    <record id="view_shipment_order_search" model="ir.ui.view">
+      <field name="name">shimpment.order.search</field>
+      <field name="model">shipment.order</field>
+      <field name="arch" type="xml">
+        <search string="Shipment Analysis">
+          <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+          <filter string="Confirmed" name="confirmed" domain="[('state','=','confirm')]"/>
+          <filter string="Closed" name="close" domain="[('state','=', 'done')]"/>
+          <separator/>
+
+          <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+          <group expand="1" string="Group By">
+
+            <filter string="Status" name="status" context="{'group_by':'state'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
     <!-- explicit list view definition -->
 
     <record model="ir.ui.view" id="shipment_order_list">
