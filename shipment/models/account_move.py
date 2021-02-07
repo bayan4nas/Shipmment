@@ -36,8 +36,28 @@ class AccountMove(models.Model):
         
     )
 
-    inv_seq = fields.Char(string='Appointment ID', required=True, copy=False, readonly=True,
+    inv_seq = fields.Char(string='Invoice ID', required=True, copy=False, readonly=True,
                        index=True, default=lambda self: _('New'))
+    
+
+    
+    ref_id = fields.Many2one(
+        string='Reference',
+        comodel_name='shipment.order',
+    )
+
+    credit_not_id = fields.Many2one(
+        string='Credit Note',
+        comodel_name='account.move',
+    )
+    
+    
+        
+        
+       
+
+
+
     @api.model
     def create(self, vals):
         # overriding the create method to add the sequence

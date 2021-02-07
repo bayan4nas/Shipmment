@@ -25,13 +25,22 @@
                 <field name="company_currency_id" />
 
             </field>
+            <field name="partner_id" position="after">
+                <field name="credit_not_id" attrs="{'invisible': [('type', '!=', 'out_invoice')"/>
+            </field>
             <field name="ref" position="after">
                 <field name="charge_id" widget="selection" />
                 <field name="rate_currency_id" options="{'currency_field': 'rate_currency_id'}"/>
                 <field name="charge_amount" widget="monetary" options="{'currency_field': 'rate_currency_id'}"/>
-
-
             </field>
+
+
+            <field name="ref" position="replace">
+                <field name="ref_id" readonly="1" />
+            </field>
+
+
+
             <xpath expr="//field[@name='invoice_partner_bank_id']" position="attributes">
                 <attribute name="domain">[]</attribute>
             </xpath>
@@ -65,5 +74,20 @@
             </field>
         </field>
     </record>
+
+    <record id="account.menu_action_account_payments_receivable" model="ir.ui.menu">
+        <field name="name">Receipts</field>
+    </record>
+
+    <record id="account.menu_action_move_in_receipt_type" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="account.menu_action_move_in_receipt_type" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="account.menu_action_move_out_receipt_type" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
 
 </odoo>

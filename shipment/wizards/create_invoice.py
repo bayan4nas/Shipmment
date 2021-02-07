@@ -16,6 +16,7 @@ class CreateAppointment(models.TransientModel):
         'partner_id': order_id.customer_id.id if invoice_type == 'out' else order_id.vendor_id.id,
         'state': 'draft',
         'policy_id':order_id.id,
+        'ref_id':order_id.id,
         'type': 'out_invoice' if invoice_type == 'out' else 'in_invoice',
         'invoice_date': order_id.date_order,
         }
@@ -38,6 +39,7 @@ class CreateAppointment(models.TransientModel):
         'partner_id': order_id.customer_id.id if invoice_type == 'out' else order_id.vendor_id.id,
         'state': 'draft',
         'policy_id':order_id.id,
+        'ref_id':order_id.id,
         'type': 'out_invoice' if invoice_type == 'out' else 'in_invoice',
         'invoice_date': order_id.date_order,
         'invoice_line_ids': [(0, 0, {
