@@ -38,11 +38,13 @@ class ShipmentOrder(models.Model):
         string='From',
         comodel_name='res.country',
         ondelete='restrict',
+        required=True
     )
 
     to_country_id = fields.Many2one(
         string='To',
         comodel_name='res.country',
+        required=True
     )
     
     
