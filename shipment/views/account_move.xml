@@ -26,7 +26,7 @@
 
             </field>
             <field name="partner_id" position="after">
-                <field name="credit_not_id" attrs="{'invisible': [('type', '!=', 'out_invoice')"/>
+                <field name="credit_not_id" attrs="{'invisible': [('type', '!=', 'out_invoice')]}"/>
             </field>
             <field name="ref" position="after">
                 <field name="charge_id" widget="selection" />
