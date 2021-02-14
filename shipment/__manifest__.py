@@ -31,6 +31,7 @@
         'reports/report.xml',
         'reports/external_layout.xml',
         'reports/report_invoice_shipment.xml',
+        'reports/report_payment_receipt_template.xml',
         'views/shipment_order.xml',
         'views/account_move.xml',
         'views/payment_charge_type.xml',

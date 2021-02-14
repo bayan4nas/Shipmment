@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sale_report_inherit" inherit_id="account.report_payment_receipt_document">
+        <xpath expr="//div[@class='row mb64']" position="replace">
+            <div class="row mb64">
+                <div class="col-6" t-if="o.amount">
+                    <strong>Payment Amount: </strong>
+                    <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                </div>
+                <div class="col-6" t-if="o.amount">
+                    <strong>Payment Currency Amount: </strong>
+
+                    <t t-esc="o.compute_currency_with_rate(o.reconciled_invoice_ids[0] , o.amount ,o.reconciled_invoice_ids[0].charge_amount ,o.reconciled_invoice_ids[0].rate_currency_id  )" t-options="{'widget': 'monetary', 'display_currency':o.reconciled_invoice_ids[0].rate_currency_id}"/>
+
+                    <!-- t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/> -->
+                </div>
+
+            </div>
+        </xpath>
+
+    </template>
+
+
+</odoo>
