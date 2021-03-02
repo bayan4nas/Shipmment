@@ -50,6 +50,14 @@ class AccountMove(models.Model):
         string='Credit Note',
         comodel_name='account.move',
     )
+
+    
+    commission = fields.Boolean(
+        string='Commission',
+        readonly=True 
+        
+    )
+    
     
     
         
@@ -70,46 +78,41 @@ class AccountMove(models.Model):
 
     
     def compute_currency_with_rate(self,mve,total,rate,currency_id ):
+        #call the method from report with amount , currency and date to get amount in company currency and vis versa
         amount = rate * total
-        print("am,ount=========",amount)
         lang_env = mve.with_context(lang=mve.partner_id.lang).env
-        # amount_convert = formatLang(lang_env, amount, currency_obj=currency_id)
-        print("amount conver============",amount)
-        return amount
-       #call the method from report with amount , currency and date to get amount in company currency and vis versa
-        # company_currency = self.env.user.company_id.currency_id
-        # currency_id = self.env['res.currency'].search([('id', '=', currency_id)])
-        # # if company_currency.id == currency_id.id:
-        # print(":currency=======",currency_id.name)
-        # print(":company_currency=======",company_currency.name)
-        # amount_convert = currency_id._convert(total, company_currency, self.env.user.company_id, date_order or fields.Date.today())
         
-        # lang_env = mve.with_context(lang=mve.partner_id.lang).env
-        # amount_convert = formatLang(lang_env, amount_convert, currency_obj=currency_id)
-        # return amount_convert
-                # amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency )
-                #     return round(amount_convert,3)
-                # amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency)
-        # amount_convert = currency_id._convert(total, company_currency, self.env.user.company_id, date_order or fields.Date.today())
-        # return total
+        return amount
+       
 
     def compute_currency_without_rate(self,total,date_order,currency_id ):
         
        #call the method from report with amount , currency and date to get amount in company currency and vis versa
         company_currency = self.env.user.company_id.currency_id
-        # currency_id = self.env['res.currency'].search([('id', '=', currency_id)])
-        # # if company_currency.id == currency_id.id:
-        # print(":currency=======",currency_id.name)
-        # print(":company_currency=======",company_currency.name)
-        if currency_id != company_currency:
-            amount_convert = currency_id._convert(total, company_currency, self.env.user.company_id, date_order or fields.Date.today())
-        # lang_env = mve.with_context(lang=mve.partner_id.lang).env
-        # amount_convert = formatLang(lang_env, amount_convert, currency_obj=currency_id)
+        if currency_id != company_currency.id:
+            amount_convert = self.env['res.currency'].browse(currency_id)._convert(total, company_currency, self.env.user.company_id, date_order or fields.Date.today())
+        
             return round(amount_convert,3)
         return total
-                # amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency )
-                #     return round(amount_convert,3)
-                # amount_convert = currency_id.with_context(date=date_order).compute(total,company_currency)
-        # amount_convert = currency_id._convert(total, company_currency, self.env.user.company_id, date_order or fields.Date.today())
-        # return total
+                
        
+    def action_post(self):
+        #override post method to make sure :
+        # customer invoice is greater than vendor bill
+        for rec in self:
+            #get related vendor bill before posting
+            if rec.ref_id:
+                bills = self.search([('ref_id','=',rec.ref_id.id),('type','=','in_invoice'),('commission','=',False)])
+                total_bills_amount = sum(bills.mapped('amount_total'))
+                if self.amount_total < total_bills_amount:
+                    raise UserError(_("Customer invoice amount is %s can not be less than related vendor bill which is %s for relate policy number %s.")% (self.amount_total, total_bills_amount, self.ref_id.name))
+            if rec.commission:
+                bills = self.search([('ref_id','=',rec.ref_id.id),('type','=','in_invoice'),('commission','!=',True)])
+                invoices = self.search([('ref_id','=',rec.ref_id.id),('type','=','out_invoice')])
+                total_amount = sum(invoices.mapped('amount_total')) -  sum(bills.mapped('amount_total'))
+               
+                if rec.amount_total > total_amount:
+                    raise UserError(_("Commission amount %s can not be greate than difference between vendor bill %s and customer invoice %s for relate policy %s.")% (rec.amount_total, sum(bills.mapped('amount_total')) ,  sum(invoices.mapped('amount_total')), rec.ref_id.name))
+        return super(AccountMove, self).action_post()
+        
+        

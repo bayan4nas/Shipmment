@@ -32,6 +32,11 @@ class CreateAppointment(models.TransientModel):
         selection=[('company', 'Company Currency'), ('usd', 'USD')],default="company"
     )
     
+    
+    commission = fields.Boolean(
+        string='Show Commission?',
+    )
+    
 
     
 

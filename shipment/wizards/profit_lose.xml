@@ -12,6 +12,7 @@
                         <field name="end"/>
                     </group>
                     <group>
+                    <field name="commission"/>
                         <field name="currency" widget="radio" />
                         <field name="policy_ids" widget="many2many_tags" />
                     </group>

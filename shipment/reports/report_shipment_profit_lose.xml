@@ -19,8 +19,8 @@
                 </style>
 
                 <div class="page" style="font-size: 12;">
-                <br/>
-                <br/>
+                    <br/>
+                    <br/>
                     <div class="Center">
                         <p >From: <t t-esc="data['start']"/>
  To <t t-esc="data['end']"/>
@@ -50,13 +50,18 @@
                                     <th class="Center">
                                         <strong>Profit And Lose</strong>
                                     </th>
+                                    <t t-if="data['commission']">
+                                            <th class="Center">
+                                        <strong>Commission</strong>
+                                    </th>
+                                        </t>
                                 </tr>
                             </thead>
                             <tbody>
                                 <t t-set="number" t-value="1" />
                                 <t t-set="bill" t-value="0" />
                                 <t t-set="inv" t-value="0" />
-                                 <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
+                                <t t-set="company_currncey" t-value="request.env.user.company_id.currency_id" />
 
                                 <t t-foreach="result" t-as="o">
                                     <tr>
@@ -106,6 +111,13 @@
                                             <span t-esc="inv - bill"/>
 
                                         </td>
+                                        <t t-if="data['commission']">
+                                            <td class="Center">
+
+                                                <span t-esc="o['commission']"/>
+
+                                            </td>
+                                        </t>
 
                                         <t t-set="number" t-value="number + 1" />
                                     </tr>
