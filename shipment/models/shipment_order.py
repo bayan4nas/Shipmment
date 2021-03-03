@@ -11,7 +11,7 @@ class ShipmentOrder(models.Model):
     _order = "date_order desc"
 
     def get_moves_count(self):
-        moves = self.env['account.move'].search([('policy_id', '=', self.id)])
+        moves = self.env['account.move'].search([('ref_id', '=', self.id)])
         self.bills_count = len(moves.filtered(lambda b: b.type == 'in_invoice' and not b.commission))
         self.commission_count = len(moves.filtered(lambda b: b.type == 'in_invoice' and b.commission))
         self.invoices_count = len(moves.filtered(lambda i: i.type == 'out_invoice'))
@@ -104,7 +104,7 @@ class ShipmentOrder(models.Model):
     def open_commission(self):
         return {
             'name': _('Commission'),
-            'domain': [('policy_id', '=', self.id),('type', '=', 'in_invoice'),('commission', '=', True)],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice'),('commission', '=', True)],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
@@ -114,7 +114,7 @@ class ShipmentOrder(models.Model):
     def open_vendor_bills(self):
         return {
             'name': _('Vendor Bills'),
-            'domain': [('policy_id', '=', self.id),('type', '=', 'in_invoice')],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice')],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
@@ -125,7 +125,7 @@ class ShipmentOrder(models.Model):
     def open_customer_invoices(self):
         return {
             'name': _('Customer Invoices'),
-            'domain': [('policy_id', '=', self.id),('type', '=', 'out_invoice')],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'out_invoice')],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
