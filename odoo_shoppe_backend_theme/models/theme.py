@@ -61,7 +61,7 @@ class ResConfigSettings(models.TransientModel):
         ('apps', 'Top Menu'),
         ('sidemenu', 'Side Collapse Menu'),
         ('fullmenu', 'Side Expand Menu')
-    ], string="Menu Style", default="sidemenu", related='company_id.menu_style', readonly=False)
+    ], string="Menu Style", default="apps", related='company_id.menu_style', readonly=False)
     font_name = fields.Selection([
         ('inherit', 'Default'),
         ('Open Sans Light', 'Open Sans Light'),
