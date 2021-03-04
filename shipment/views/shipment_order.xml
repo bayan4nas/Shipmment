@@ -34,6 +34,23 @@
         </tree>
       </field>
     </record>
+      <!-- action for commission -->
+     <!-- <record id="action_commission_in_invoice_type" model="ir.actions.act_window">
+            <field name="name">Bills</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">form,kanban,tree</field>
+            <field name="view_id" ref="view_invoice_tree"/>
+            <field name="search_view_id" ref="view_account_invoice_filter"/>
+            <field name="domain">[('type', '=', 'in_invoice')]</field>
+            <field name="context">{'default_type': 'in_invoice','default_commission': True}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a commission 
+              </p><p>
+                Create commission, register payments and keep track of the discussions with your vendors.
+              </p>
+            </field>
+        </record> -->
 
 
     <record id="veiw_shipment_order" model="ir.ui.view">
@@ -44,10 +61,12 @@
           <header>
             <field name="invoiced" invisible="1" />
             <field name="billed" invisible="1" />
+            <field name="bills_count" invisible="1" />
             <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
             <button name="action_close" string="Close" type="object" class="oe_highlight" states="confirm"/>
-            <button name="create_customer_invocie" type="object" string="Create Customer Invoice" states="confirm" class="oe_highlight" />
+            <button name="create_customer_invocie" type="object" string="Create Customer Invoice"  class="oe_highlight"  attrs="{'invisible': [('bills_count','&lt;=', 0)]}" />
             <button name="create_vendor_bill" type="object" string="Create Vendor Bill" class="oe_highlight" states="confirm" />
+            <button name="create_commission" type="object" string="Create Commission" class="oe_highlight"  attrs="{'invisible': [('bills_count','&lt;=', 0)]}"  />
             <!-- attrs="{'invisible': ['|',('invoiced', '=', True)]}" -->
 
             <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
@@ -60,6 +79,9 @@
 
               <button name="open_customer_invoices" class="oe_stat_button" type="object" icon="fa-money">
                 <field string="Invoices" name="invoices_count" widget="statinfo"/>
+              </button>
+              <button name="open_commission" class="oe_stat_button" type="object" icon="fa-money"  >
+                <field string="commission" name="commission_count" widget="statinfo"/>
               </button>
 
             </div>

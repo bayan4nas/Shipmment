@@ -29,13 +29,15 @@ class ProfitReport(models.AbstractModel):
         for invoi in in_invoice:
             total = 0.0
             for ouinv in out_invoice:
-                if invoi.policy_id == ouinv.policy_id:
+                if invoi.policy_id == ouinv.policy_id and not invoi.commission:
                     
                     total+= ouinv.amount_total
+
             vals = {
                 'currency':invoi.currency_id.id,
                 'name': invoi.policy_id.name,
                 'bill': invoi.amount_total,
+                'commission':invoi.amount_total if invoi.commission else 0.0,
                 'company':invoi.partner_id.name,
                 'invoice':total,
                 'invoice_date':invoi.invoice_date,

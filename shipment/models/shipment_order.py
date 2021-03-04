@@ -11,8 +11,9 @@ class ShipmentOrder(models.Model):
     _order = "date_order desc"
 
     def get_moves_count(self):
-        moves = self.env['account.move'].search([('policy_id', '=', self.id)])
-        self.bills_count = len(moves.filtered(lambda b: b.type == 'in_invoice'))
+        moves = self.env['account.move'].search([('ref_id', '=', self.id)])
+        self.bills_count = len(moves.filtered(lambda b: b.type == 'in_invoice' and not b.commission))
+        self.commission_count = len(moves.filtered(lambda b: b.type == 'in_invoice' and b.commission))
         self.invoices_count = len(moves.filtered(lambda i: i.type == 'out_invoice'))
 
     name = fields.Char(string='Policy Number', required=True,)
@@ -88,6 +89,7 @@ class ShipmentOrder(models.Model):
     )
     
     bills_count = fields.Integer(string='Bills', compute='get_moves_count')
+    commission_count = fields.Integer(string='Commission', compute='get_moves_count')
     invoices_count = fields.Integer(string='Invoices', compute='get_moves_count')
     
     
@@ -99,11 +101,20 @@ class ShipmentOrder(models.Model):
     #     result = super(ShipmentOrder, self).create(vals)
     #     return result
 
-   
+    def open_commission(self):
+        return {
+            'name': _('Commission'),
+            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice'),('commission', '=', True)],
+            'view_type': 'form',
+            'res_model': 'account.move',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
     def open_vendor_bills(self):
         return {
             'name': _('Vendor Bills'),
-            'domain': [('policy_id', '=', self.id),('type', '=', 'in_invoice')],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice')],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
@@ -114,7 +125,7 @@ class ShipmentOrder(models.Model):
     def open_customer_invoices(self):
         return {
             'name': _('Customer Invoices'),
-            'domain': [('policy_id', '=', self.id),('type', '=', 'out_invoice')],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'out_invoice')],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
@@ -123,6 +134,8 @@ class ShipmentOrder(models.Model):
         }
         
     def action_confirm(self):
+        if not self.line_ids:
+            raise UserError(_("You should add at least on container to the order"))
         self.state = 'confirm'
         
     
@@ -162,6 +175,29 @@ class ShipmentOrder(models.Model):
             'context': context
         }
 
+    def create_commission(self):
+        print("self id -------",self.id)
+        print("context.get('active_id'---------------",self.env.context.get('active_id'))
+        invoice_vals = {
+        'partner_id': False,
+        'ref_id':self.id,
+        'state': 'draft',
+        'commission':True,
+        'type': 'in_invoice',
+        'invoice_date': self.date_order,
+        'invoice_line_ids':False,
+        }
+        move = self.env['account.move'].sudo().create(invoice_vals)
+        print("move----------",move.ref_id , move.commission)
+        return {
+            'name': _('Commission'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.move',
+            'res_id':move.id
+            # 'domain': [('id', 'in', ids)],
+        }
 
 class ShipmentOrderLine(models.Model):
     _name = 'shipment.order.line'
