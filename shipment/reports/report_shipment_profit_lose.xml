@@ -98,7 +98,7 @@
                                                 <t t-set="inv" t-value="inv + amount_currency" />
                                             </t>
                                             <t t-if="data['currency'] == 'company'">
-                                                <t t-set="amount_currency" t-value="request.env['account.move'].compute_currency_without_rate(o['bill'],o['invoice_date'],company_currncey.id)" />
+                                                <t t-set="amount_currency" t-value="request.env['account.move'].compute_currency_without_rate(o['invoice'],o['invoice_date'],company_currncey.id)" />
                                                 <t t-esc="amount_currency"/>
                                                 <t t-set="inv" t-value="inv + amount_currency" />
 
