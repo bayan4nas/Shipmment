@@ -49,3 +49,12 @@ class CreateAppointment(models.TransientModel):
             'form': data
         }
         return self.env.ref('shipment.action_profit_lose_report').report_action(self.id,datas)
+    def print_excel_report(self):
+        self.ensure_one()
+        [data] = self.read()
+        datas = {
+            'ids': [],
+            'model': 'profit.lose.report',
+            'form': data
+        }
+        return self.env.ref('shipment.action_shipment_xls').report_action(self.id,datas)

@@ -20,4 +20,15 @@
     <report id="account.account_invoices" model="account.move" string="Invoices" report_type="qweb-pdf" name="account.report_invoice_with_payments" file="account.report_invoice_with_payments" attachment="(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')" print_report_name="(object._get_report_base_filename())" groups="account.group_account_invoice" menu="False" />
 
     <report id="account_shipment_invoices" model="account.move" string="Invoices" report_type="qweb-pdf" name="shipment.report_invoice_shipment" file="shipment.report_invoice_shipment" attachment="(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')" print_report_name="(object._get_report_base_filename())" groups="account.group_account_invoice" />
+
+     <report
+        id="action_shipment_xls"
+        model="shipment.order"
+        string="Print to XLSX"
+        report_type="xlsx"
+        name="shipment.shipment_order_xls"
+        file="Shipment Policy"
+        attachment_use="False"
+        menu="False"
+        />
 </odoo>
