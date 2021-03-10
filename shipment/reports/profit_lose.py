@@ -104,7 +104,7 @@ class AttendancesReportXls(models.AbstractModel):
         sheet.write(2, 2, 'Company', format1)
         sheet.write(2, 3, 'Customer Invoices', format1)
         sheet.write(2, 4, 'Profit And Lose', format1)
-        sheet.write(2, 5, 'Profit And Lose', format1)
+       
         
         if commission:
             sheet.write(2, 5, 'Commission', format1)
