@@ -27,7 +27,7 @@ class ShipmentOrder(models.Model):
     )
 
     vendor_id = fields.Many2one(
-        string='Vendor',
+        string='Line',
         comodel_name='res.partner',
         required=True
        
@@ -113,7 +113,7 @@ class ShipmentOrder(models.Model):
         }
     def open_vendor_bills(self):
         return {
-            'name': _('Vendor Bills'),
+            'name': _('Line Bills'),
             'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice')],
             'view_type': 'form',
             'res_model': 'account.move',
@@ -212,7 +212,7 @@ class ShipmentOrderLine(models.Model):
     )
     
     product_id = fields.Many2one(
-        string='Product',
+        string='Container',
         comodel_name='product.product',
         required=True,
         domain="[('type', '=', 'service')]",

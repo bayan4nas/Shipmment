@@ -100,7 +100,7 @@ class AttendancesReportXls(models.AbstractModel):
         
         
         sheet.write(2, 0, 'name', format1)
-        sheet.write(2, 1, 'Vendor Bills', format1)
+        sheet.write(2, 1, 'Line Bills', format1)
         sheet.write(2, 2, 'Company', format1)
         sheet.write(2, 3, 'Customer Invoices', format1)
         sheet.write(2, 4, 'Profit And Lose', format1)

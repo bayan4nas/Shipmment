@@ -104,7 +104,7 @@ class AccountMove(models.Model):
             if rec.ref_id and not rec.commission:
                 bills = self.search([('ref_id','=',rec.ref_id.id),('type','=','in_invoice'),('commission','=',False)])
                 total_bills_amount = sum(bills.mapped('amount_total'))
-                if self.amount_total < total_bills_amount:
+                if self.amount_total <= total_bills_amount:
                     raise UserError(_("Customer invoice amount is %s can not be less than related vendor bill which is %s for relate policy number %s.")% (self.amount_total, total_bills_amount, self.ref_id.name))
             if rec.ref_id and rec.commission:
                 bills = self.search([('ref_id','=',rec.ref_id.id),('type','=','in_invoice'),('commission','!=',True)])

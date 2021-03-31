@@ -65,7 +65,7 @@
             <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
             <button name="action_close" string="Close" type="object" class="oe_highlight" states="confirm"/>
             <button name="create_customer_invocie" type="object" string="Create Customer Invoice"  class="oe_highlight"  attrs="{'invisible': [('bills_count','&lt;=', 0)]}" />
-            <button name="create_vendor_bill" type="object" string="Create Vendor Bill" class="oe_highlight" states="confirm" />
+            <button name="create_vendor_bill" type="object" string="Create Line Bill" class="oe_highlight" states="confirm" />
             <button name="create_commission" type="object" string="Create Commission" class="oe_highlight"  attrs="{'invisible': [('bills_count','&lt;=', 0)]}"  />
             <!-- attrs="{'invisible': ['|',('invoiced', '=', True)]}" -->
 
