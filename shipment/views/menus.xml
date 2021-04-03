@@ -9,7 +9,7 @@
     <menuitem id="shipment_order_menu" name="Orders" parent="shipment_order_root_menu" action="action_orders" />
 
     <!-- report main menu -->
-    <menuitem id="shipment_order_reports" name="Reports" parent="shipment_menu_root"  sequence="2"/>
+    <menuitem id="shipment_order_reports" name="Reports" parent="shipment_menu_root" groups="shipment.group_shimpment_manager"  sequence="2"/>
     <!-- profit lose menu -->
     <menuitem id="shipment_order_profit_lose" name="Profit Lose" parent="shipment_order_reports" action="profit_lose_wizard"/>
 
@@ -17,7 +17,7 @@
     
 
     <!-- configuration root menu -->
-    <menuitem id="configuration_root" name="configuration" parent="shipment_menu_root"  sequence="3"/>
+    <menuitem id="configuration_root" name="configuration" parent="shipment_menu_root"  groups="shipment.group_shimpment_manager"  sequence="3"/>
     <!-- payment charge type menu -->
     <menuitem id="shipment_port" name="Shipment Ports" parent="configuration_root" action="action_port"/>
     <!-- payment charge type menu -->
