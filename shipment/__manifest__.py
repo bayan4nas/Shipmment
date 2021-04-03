@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'wizards/profit_lose.xml',
