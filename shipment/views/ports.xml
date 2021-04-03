@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="shipment_port_list">
+            <field name="name">Shipment Port List</field>
+            <field name="model">shipment.port</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="country_id"/>
+
+                </tree>
+            </field>
+        </record>
+        <record id="veiw_shipment_port" model="ir.ui.view">
+            <field name="name">shipment.port.form</field>
+            <field name="model">shipment.port</field>
+            <field name="arch" type="xml">
+                <form string="Shipment Port" class="o_sale_order">
+                    <sheet>
+                        <group>
+                            <group>
+                          
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="country_id"/>
+                        </group>
+                          </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_port" model="ir.actions.act_window">
+            <field name="name">Shipment Port</field>
+            <field name="res_model">shipment.port</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new shipment port, the first step of a new port!
+                </p>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

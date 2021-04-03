@@ -13,9 +13,14 @@
     <!-- profit lose menu -->
     <menuitem id="shipment_order_profit_lose" name="Profit Lose" parent="shipment_order_reports" action="profit_lose_wizard"/>
 
-    <!-- payment charge type root menu -->
-    <menuitem id="payment_charge_root" name="Payment Type" parent="shipment_menu_root"  sequence="3"/>
+   
+    
+
+    <!-- configuration root menu -->
+    <menuitem id="configuration_root" name="configuration" parent="shipment_menu_root"  sequence="3"/>
     <!-- payment charge type menu -->
-    <menuitem id="payment_charge" name="Payment Type" parent="payment_charge_root" action="action_payment_charge"/>
+    <menuitem id="shipment_port" name="Shipment Ports" parent="configuration_root" action="action_port"/>
+    <!-- payment charge type menu -->
+    <menuitem id="payment_charge" name="Payment Type" parent="configuration_root" action="action_payment_charge"/>
 
 </odoo>
