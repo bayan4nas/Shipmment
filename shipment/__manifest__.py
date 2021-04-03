@@ -35,8 +35,10 @@
         'views/shipment_order.xml',
         'views/account_move.xml',
         'views/payment_charge_type.xml',
-        'views/menus.xml',
         'views/res_bank.xml',
+        'views/ports.xml',
+        'views/res_partner.xml',
+        'views/menus.xml',
        
         # 'views/template.xml',
         

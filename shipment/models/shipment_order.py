@@ -16,7 +16,9 @@ class ShipmentOrder(models.Model):
         self.commission_count = len(moves.filtered(lambda b: b.type == 'in_invoice' and b.commission))
         self.invoices_count = len(moves.filtered(lambda i: i.type == 'out_invoice'))
 
-    name = fields.Char(string='Policy Number', required=True,)
+    name = fields.Char(string='B/L Number', required=True,)
+    agent = fields.Char(string='C.Agent Name', )
+    
 
     customer_id = fields.Many2one(
         string='Customer',
@@ -35,16 +37,15 @@ class ShipmentOrder(models.Model):
     )
 
     
-    from_country_id = fields.Many2one(
+    from_port = fields.Many2one(
         string='From',
-        comodel_name='res.country',
-        ondelete='restrict',
+        comodel_name='shipment.port',
         required=True
     )
 
-    to_country_id = fields.Many2one(
+    to_port = fields.Many2one(
         string='To',
-        comodel_name='res.country',
+        comodel_name='shipment.port',
         required=True
     )
     
@@ -100,6 +101,12 @@ class ShipmentOrder(models.Model):
     
     #     result = super(ShipmentOrder, self).create(vals)
     #     return result
+
+    @api.constrains('agent')
+    def _check_name(self):
+        for record in self:
+           if self.search_count([('agent','!=',False),('agent','=',self.agent)]) > 1:
+               raise ValidationError(_("You cant have two C.Agent Name with the same name, please choose different C.Agent Name"))
 
     def open_commission(self):
         return {
