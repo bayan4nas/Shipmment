@@ -59,6 +59,21 @@
                 <attribute name="readonly">0</attribute>
             </field>
 
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <field name="invoice_vendor_bill_id" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </field>
+
+            <field name="credit_not_id" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </field>
+
+            <field name="journal_id" position="after">
+                <field name="remark" />
+            </field>
 
         </field>
     </record>

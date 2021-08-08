@@ -58,6 +58,7 @@ class AccountMove(models.Model):
         
     )
     
+    remark = fields.Char('Remark')
     
     
         

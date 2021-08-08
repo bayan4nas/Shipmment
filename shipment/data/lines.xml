@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="partner_line1" model="res.partner">
+            <field name="name">PIL SHIPPING LINE</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line2" model="res.partner">
+            <field name="name">CMA LINE </field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line3" model="res.partner">
+            <field name="name">HAPAG LIOYD</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line4" model="res.partner">
+            <field name="name">MAERSK LINE</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line5" model="res.partner">
+            <field name="name">POLLARIES LINE</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line6" model="res.partner">
+            <field name="name">MSC LINE</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line7" model="res.partner">
+            <field name="name">EVER GREEN LINE</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line8" model="res.partner">
+            <field name="name">COSCO LINE</field>
+            <field name="line">1</field>
+        </record>
+    
+        <record id="partner_line9" model="res.partner">
+            <field name="name">BAY LINE SHIPPING</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line10" model="res.partner">
+            <field name="name">BOLLORE LINE</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line11" model="res.partner">
+            <field name="name">ATLANTIC CO</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line12" model="res.partner">
+            <field name="name">UTC YANG MING</field>
+            <field name="line">1</field>
+        </record>
+
+        <record id="partner_line13" model="res.partner">
+            <field name="name">OOCL LINE</field>
+            <field name="line">1</field>
+        </record>
+    </data>
+</odoo>

@@ -110,15 +110,15 @@
                                             <!-- <td><t t-esc="line.product_id.name"/></td> -->
                                             <td>
                                                 <t t-if="o.policy_id">
-                                                    <t t-if="o.policy_id.to_country_id">
-                                                        <t t-esc="o.policy_id.to_country_id.name"></t>
+                                                    <t t-if="o.policy_id.to_port">
+                                                        <t t-esc="o.policy_id.to_port.name"></t>
                                                     </t>
                                                 </t>
                                             </td>
                                             <td>
                                                 <t t-if="o.policy_id">
-                                                    <t t-if="o.policy_id.from_country_id">
-                                                        <t t-esc="o.policy_id.from_country_id.name"></t>
+                                                    <t t-if="o.policy_id.from_port">
+                                                        <t t-esc="o.policy_id.from_port.name"></t>
                                                     </t>
                                                 </t>
                                             </td>

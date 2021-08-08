@@ -40,10 +40,8 @@
         'views/ports.xml',
         'views/res_partner.xml',
         'views/menus.xml',
-       
+        'data/lines.xml'
         # 'views/template.xml',
-        
-        
     ],
     # only loaded in demonstration mode
    
