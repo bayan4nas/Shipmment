@@ -59,13 +59,8 @@ class AccountMove(models.Model):
     )
     
     remark = fields.Char('Remark')
-    
-    
-        
-        
-       
 
-
+    is_ship = fields.Boolean('Shipment Bill/Invoice')  
 
     @api.model
     def create(self, vals):

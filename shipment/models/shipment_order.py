@@ -62,10 +62,7 @@ class ShipmentOrder(models.Model):
         comodel_name='shipment.order.line',
         inverse_name='shipment_id',
     )
-    
-    
-    
-    
+        
     # inv_id = fields.Many2one(
     #     string='Invoive Ref',
     #     comodel_name='account.move',
@@ -93,7 +90,6 @@ class ShipmentOrder(models.Model):
     commission_count = fields.Integer(string='Commission', compute='get_moves_count')
     invoices_count = fields.Integer(string='Invoices', compute='get_moves_count')
     
-    
     # @api.model
     # def create(self, vals):
     #     if vals.get('name', _('New')) == _('New'):
@@ -111,7 +107,7 @@ class ShipmentOrder(models.Model):
     def open_commission(self):
         return {
             'name': _('Commission'),
-            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice'),('commission', '=', True)],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice'),('commission', '=', True),('is_ship','=',True)],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
@@ -121,7 +117,7 @@ class ShipmentOrder(models.Model):
     def open_vendor_bills(self):
         return {
             'name': _('Line Bills'),
-            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice')],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice'),('is_ship','=',True)],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
@@ -132,7 +128,7 @@ class ShipmentOrder(models.Model):
     def open_customer_invoices(self):
         return {
             'name': _('Customer Invoices'),
-            'domain': [('ref_id', '=', self.id),('type', '=', 'out_invoice')],
+            'domain': [('ref_id', '=', self.id),('type', '=', 'out_invoice'),('is_ship','=',True)],
             'view_type': 'form',
             'res_model': 'account.move',
             'view_id': False,
@@ -154,6 +150,7 @@ class ShipmentOrder(models.Model):
         # of how user wants to create the customer invoice
         context = dict(self.env.context)
         context['invoice_type'] = 'out'
+        context['default_is_ship'] = True
         return {
             'name': "Create Invoice",
             'type': 'ir.actions.act_window',
@@ -171,6 +168,7 @@ class ShipmentOrder(models.Model):
         # of how user wants to create the vendor invoice
         context = dict(self.env.context)
         context['invoice_type'] = 'in'
+        context['default_is_ship'] = True
         return {
             'name': "Create Invoice",
             'type': 'ir.actions.act_window',
@@ -183,19 +181,17 @@ class ShipmentOrder(models.Model):
         }
 
     def create_commission(self):
-        print("self id -------",self.id)
-        print("context.get('active_id'---------------",self.env.context.get('active_id'))
         invoice_vals = {
-        'partner_id': False,
-        'ref_id':self.id,
-        'state': 'draft',
-        'commission':True,
-        'type': 'in_invoice',
-        'invoice_date': self.date_order,
-        'invoice_line_ids':False,
+            'partner_id': False,
+            'ref_id':self.id,
+            'state': 'draft',
+            'commission':True,
+            'type': 'in_invoice',
+            'invoice_date': self.date_order,
+            'invoice_line_ids':False,
+            'is_ship' : True,
         }
         move = self.env['account.move'].sudo().create(invoice_vals)
-        print("move----------",move.ref_id , move.commission)
         return {
             'name': _('Commission'),
             'type': 'ir.actions.act_window',
