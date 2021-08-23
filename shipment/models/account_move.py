@@ -97,18 +97,18 @@ class AccountMove(models.Model):
         # customer invoice is greater than vendor bill
         for rec in self:
             #get related vendor bill before posting
-            if rec.ref_id and not rec.commission:
+            if rec.ref_id and not rec.commission and rec.type == 'out_invoice':
                 bills = self.search([('ref_id','=',rec.ref_id.id),('type','=','in_invoice'),('commission','=',False)])
                 total_bills_amount = sum(bills.mapped('amount_total'))
                 if self.amount_total <= total_bills_amount:
-                    raise UserError(_("Customer invoice amount is %s can not be less than related vendor bill which is %s for relate policy number %s.")% (self.amount_total, total_bills_amount, self.ref_id.name))
-            if rec.ref_id and rec.commission:
+                    raise UserError(_("Customer invoice amount not Acceptaple !!"))
+            elif rec.ref_id and rec.commission:
                 bills = self.search([('ref_id','=',rec.ref_id.id),('type','=','in_invoice'),('commission','!=',True)])
                 invoices = self.search([('ref_id','=',rec.ref_id.id),('type','=','out_invoice')])
                 total_amount = sum(invoices.mapped('amount_total')) -  sum(bills.mapped('amount_total'))
                
                 if rec.amount_total > total_amount:
-                    raise UserError(_("Commission amount %s can not be greate than difference between vendor bill %s and customer invoice %s for relate policy %s.")% (rec.amount_total, sum(bills.mapped('amount_total')) ,  sum(invoices.mapped('amount_total')), rec.ref_id.name))
+                    raise UserError(_("Commission amount not Acceptaple !!"))
         return super(AccountMove, self).action_post()
         
         
