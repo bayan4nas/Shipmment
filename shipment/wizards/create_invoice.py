@@ -81,8 +81,9 @@ class CreateAppointment(models.TransientModel):
             'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'account.move',
-            'res_id':move_id.id
+            'res_id':move_id.id,
             # 'domain': [('id', 'in', ids)],
+            'view_id': self.env.ref('shipment.inherit_account_view_move_form').id,
         }
 
     

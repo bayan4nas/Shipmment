@@ -110,7 +110,7 @@ class ShipmentOrder(models.Model):
             'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice'),('commission', '=', True),('is_ship','=',True)],
             'view_type': 'form',
             'res_model': 'account.move',
-            'view_id': False,
+            'views': [[False, "tree"],[self.env.ref('shipment.inherit_account_view_move_form').id, "form"]],
             'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
         }
@@ -120,7 +120,7 @@ class ShipmentOrder(models.Model):
             'domain': [('ref_id', '=', self.id),('type', '=', 'in_invoice'),('is_ship','=',True)],
             'view_type': 'form',
             'res_model': 'account.move',
-            'view_id': False,
+            'views': [[False, "tree"],[self.env.ref('shipment.inherit_account_view_move_form').id, "form"]],
             'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
         }
@@ -131,7 +131,7 @@ class ShipmentOrder(models.Model):
             'domain': [('ref_id', '=', self.id),('type', '=', 'out_invoice'),('is_ship','=',True)],
             'view_type': 'form',
             'res_model': 'account.move',
-            'view_id': False,
+            'views': [[False, "tree"],[self.env.ref('shipment.inherit_account_view_move_form').id, "form"]],
             'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
         }
