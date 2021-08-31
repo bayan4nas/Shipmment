@@ -81,7 +81,7 @@ class AccountMove(models.Model):
     @api.depends('rate_currency_id','currency_id')    
     def get_rate_currency(self):
         if self.rate_currency_id and self.currency_id :
-            rate = self.rate_currency_id._convert(1, self.currency_id, self.env['res.company'].browse(1), self.invoice_date or fields.Date.today())
+            rate = self.currency_id._convert(1, self.rate_currency_id, self.env['res.company'].browse(1), self.invoice_date or fields.Date.today())
             self.charge_amount = rate 
         
     def compute_currency_with_rate(self,mve,total,rate,currency_id ):
