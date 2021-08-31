@@ -27,6 +27,8 @@ class AccountMove(models.Model):
 
     charge_amount = fields.Float(
         string='Charge Rate',
+        compute="get_rate_currency",
+        store=True,
     )
 
     company_currency_id = fields.Many2one(
@@ -70,9 +72,12 @@ class AccountMove(models.Model):
         result = super(AccountMove, self).create(vals)
         return result
     
+    @api.depends('rate_currency_id','currency_id')    
+    def get_rate_currency(self):
+        if self.rate_currency_id and self.currency_id :
+            rate = self.rate_currency_id._convert(1, self.currency_id, self.env['res.company'].browse(1), self.invoice_date or fields.Date.today())
+            self.charge_amount = rate 
         
-
-    
     def compute_currency_with_rate(self,mve,total,rate,currency_id ):
         #call the method from report with amount , currency and date to get amount in company currency and vis versa
         amount = rate * total

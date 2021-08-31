@@ -142,8 +142,8 @@ class ShipmentOrder(models.Model):
         self.state = 'confirm'
         
     
-    def action_close(self):
-        self.state = 'done'
+    def action_draft(self):
+        self.state = 'draft'
 
     def create_customer_invocie(self):
         #this method is called to open wizard,
