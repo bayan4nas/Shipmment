@@ -47,6 +47,8 @@
                                 attrs="{'invisible' : ['|', ('id', '=', False), ('state', '!=', 'draft')]}"/>
                         <button name="button_draft" string="Reset to Draft" type="object" groups="account.group_account_invoice"
                                 attrs="{'invisible' : ['|', ('restrict_mode_hash_table', '=', True), ('state', 'not in', ('posted', 'cancel'))]}"/>
+                        <button name="print_payment" string="Print Payment" type="object" groups="account.group_account_invoice"
+                                attrs="{'invisible' : [('invoice_payment_state', '!=', 'paid')]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
                     </header>
                     <!-- Invoice outstanding credits -->
@@ -135,7 +137,7 @@
                                 <div class="o_td_label">
                                     <label for="partner_id" string="Customer" style="font-weight:bold;"
                                            attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
-                                    <label for="partner_id" string="Vendor" style="font-weight:bold;"
+                                    <label for="partner_id" string="Line" style="font-weight:bold;"
                                            attrs="{'invisible': [('type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
                                 </div>
                                 <field name="partner_id" widget="res_partner_many2one" nolabel="1"

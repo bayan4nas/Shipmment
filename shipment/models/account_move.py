@@ -64,6 +64,12 @@ class AccountMove(models.Model):
 
     is_ship = fields.Boolean('Shipment Bill/Invoice')  
 
+
+    def print_payment(self):
+        paymenet_id = self.env.get('account.payment').search([('invoice_ids', 'in',[self.id])])
+        return self.env.ref('account.action_report_payment_receipt').report_action(paymenet_id)
+
+
     @api.model
     def create(self, vals):
         # overriding the create method to add the sequence
