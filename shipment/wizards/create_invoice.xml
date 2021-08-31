@@ -6,10 +6,12 @@
         <field name="model">create.invoice</field>
         <field name="arch" type="xml">
             <form string="Create Invoice">
-                
+                <field name="invocie_type" invisible="1" />
                 <footer>
                     <!-- <button name="empty_invoice" string="Empty Invoice" type="object" class="btn-primary"/> -->
-                    <button name="invoice_line" string="Invoice Lines" type="object" class="btn-primary"/>
+                    <button name="invoice_line" attrs="{'invisible' : [('invocie_type', '!=', 'line')]}" string="Line Invoice" type="object" class="btn-primary"/>
+                    <button name="invoice_line" attrs="{'invisible' : [('invocie_type', '!=', 'customer')]}" string="Customer Invoice" type="object" class="btn-primary"/>
+                    <button name="invoice_line" attrs="{'invisible' : [('invocie_type', '!=', 'commission')]}" string="Comission Invoice" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

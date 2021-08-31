@@ -7,6 +7,8 @@ class CreateAppointment(models.TransientModel):
     _name = 'create.invoice'
     _description = 'Create Invoice Wizard'
 
+    invocie_type = fields.Selection([('line', 'Line'),('customer','Customer Invoice'),('commission','Comission ')],string="Invoice Type")
+    
     def create_empty_moves(self , invoice_type , order_id):
         #TODO THIS METHOD AND BELOW METHOD CAN BE MERGED IN ON METHOD,THEY DO THE SAME EXPECT THIS WITHOUT MOVE LINES
         """call this method with type 'in' t create bill or /
@@ -42,6 +44,7 @@ class CreateAppointment(models.TransientModel):
         'ref_id':order_id.id,
         'type': 'out_invoice' if invoice_type == 'out' else 'in_invoice',
         'invoice_date': order_id.date_order,
+        'commission': self.invocie_type == 'commission',
         'invoice_line_ids': [(0, 0, {
             'product_id':line.product_id.id,
             'name': line.name,

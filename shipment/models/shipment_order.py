@@ -151,6 +151,7 @@ class ShipmentOrder(models.Model):
         context = dict(self.env.context)
         context['invoice_type'] = 'out'
         context['default_is_ship'] = True
+        context['default_invocie_type'] = 'customer'
         return {
             'name': "Create Invoice",
             'type': 'ir.actions.act_window',
@@ -169,6 +170,7 @@ class ShipmentOrder(models.Model):
         context = dict(self.env.context)
         context['invoice_type'] = 'in'
         context['default_is_ship'] = True
+        context['default_invocie_type'] = 'line'
         return {
             'name': "Create Invoice",
             'type': 'ir.actions.act_window',
@@ -181,26 +183,40 @@ class ShipmentOrder(models.Model):
         }
 
     def create_commission(self):
-        invoice_vals = {
-            'partner_id': False,
-            'ref_id':self.id,
-            'state': 'draft',
-            'commission':True,
-            'type': 'in_invoice',
-            'invoice_date': self.date_order,
-            'invoice_line_ids':False,
-            'is_ship' : True,
-        }
-        move = self.env['account.move'].sudo().create(invoice_vals)
+        context = dict(self.env.context)
+        context['invoice_type'] = 'in'
+        context['default_is_ship'] = True
+        context['default_invocie_type'] = 'commission'
         return {
-            'name': _('Commission'),
+            'name': "Create Invoice",
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'account.move',
-            'res_id':move.id
-            # 'domain': [('id', 'in', ids)],
+            'res_model': 'create.invoice',
+            'view_id': self.env.ref('shipment.create_invoice_form').id,
+            'target': 'new',
+            'context': context
         }
+        # invoice_vals = {
+        #     'partner_id': False,
+        #     'ref_id':self.id,
+        #     'state': 'draft',
+        #     'commission':True,
+        #     'type': 'in_invoice',
+        #     'invoice_date': self.date_order,
+        #     'invoice_line_ids':False,
+        #     'is_ship' : True,
+        # }
+        # move = self.env['account.move'].sudo().create(invoice_vals)
+        # return {
+        #     'name': _('Commission'),
+        #     'type': 'ir.actions.act_window',
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'account.move',
+        #     'res_id':move.id
+        #     # 'domain': [('id', 'in', ids)],
+        # }
 
 class ShipmentOrderLine(models.Model):
     _name = 'shipment.order.line'
