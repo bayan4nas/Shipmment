@@ -182,7 +182,7 @@
                             </p>
                             <p>Account Number : <t t-esc="o.invoice_partner_bank_id.acc_number"/>
                             </p>
-                            <p>Iban No : <t t-esc="o.invoice_partner_bank_id.bank_id.iban_no"/>
+                            <p>Iban No : <t t-esc="o.invoice_partner_bank_id.iban_no"/>
                             </p>
                             <p>Swift Code : <t t-esc="o.invoice_partner_bank_id.bank_id.bic"/>
                             </p>

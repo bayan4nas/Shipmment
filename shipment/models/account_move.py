@@ -65,6 +65,12 @@ class AccountMove(models.Model):
     is_ship = fields.Boolean('Shipment Bill/Invoice')  
 
 
+    @api.onchange('partner_id')
+    def get_partner_bank_account(self):
+        if self.partner_id :
+            bank_ids = self.partner_id.bank_ids
+            self.invoice_partner_bank_id = bank_ids and bank_ids[0].id or False
+
     def print_payment(self):
         paymenet_id = self.env.get('account.payment').search([('invoice_ids', 'in',[self.id])])
         return self.env.ref('account.action_report_payment_receipt').report_action(paymenet_id)
