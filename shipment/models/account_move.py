@@ -82,6 +82,7 @@ class AccountMove(models.Model):
         if vals.get('inv_seq', _('New')) == _('New'):
             vals['inv_seq'] = self.env['ir.sequence'].next_by_code('account.move.seq') or _('New')
         result = super(AccountMove, self).create(vals)
+        result.get_partner_bank_account()
         return result
     
     @api.depends('rate_currency_id','currency_id')    
