@@ -4,4 +4,8 @@
         <field name="name">Shipment Manager</field>
     </record>
 
+    <record id="group_shimpment_pricing" model="res.groups">
+        <field name="name">Pricing Manager</field>
+    </record>
+
 </odoo>

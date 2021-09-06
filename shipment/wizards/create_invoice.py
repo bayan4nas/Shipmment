@@ -37,6 +37,9 @@ class CreateAppointment(models.TransientModel):
         type 'out' to create invocie"""
 
         order_id = self.env.get('shipment.order').browse(order_id)
+        price_unit_key = 'cost'
+        if invoice_type == 'out' : price_unit_key = 'price'
+        elif self.invocie_type == 'commission' : price_unit_key = 'commission'
         invoice_vals = {
         'partner_id': order_id.customer_id.id if invoice_type == 'out' else order_id.vendor_id.id,
         'state': 'draft',
@@ -49,7 +52,7 @@ class CreateAppointment(models.TransientModel):
             'product_id':line.product_id.id,
             'name': line.name,
             'quantity': line.qty,
-            'price_unit': 0,
+            'price_unit': line[price_unit_key],
             }) for line in order_id.line_ids],
         }
         invoice = self.env['account.move'].sudo().create(invoice_vals)

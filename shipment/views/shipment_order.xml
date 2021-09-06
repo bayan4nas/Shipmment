@@ -63,13 +63,14 @@
             <field name="billed" invisible="1" />
             <field name="bills_count" invisible="1" />
             <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
-            <button name="create_customer_invocie" type="object" string="Create Customer Invoice"  class="oe_highlight"  attrs="{'invisible': [('bills_count','&lt;=', 0)]}" />
-            <button name="create_vendor_bill" type="object" string="Create Line Bill" class="oe_highlight" states="confirm" />
-            <button name="create_commission" type="object" string="Create Commission" class="oe_highlight"  attrs="{'invisible': [('bills_count','&lt;=', 0)]}"  />
-            <button name="action_draft" string="Reset Draft" type="object"  states="confirm,done"/>
+            <!-- <button name="action_approve" string="Approve Pricing" groups="shipment.group_shimpment_pricing" type="object" class="oe_highlight" states="confirm"/> -->
+            <button name="create_vendor_bill" states="confirm,approved" type="object" string="Create Line Bill" class="oe_highlight"  />
+            <button name="create_customer_invocie" states="confirm,approved" type="object" string="Create Customer Invoice"  class="oe_highlight" />
+            <button name="create_commission" states="confirm,approved" type="object" string="Create Commission" class="oe_highlight" />
+            <button name="action_draft" string="Reset Draft" type="object"  states="confirm,approved,done"/>
             <!-- attrs="{'invisible': ['|',('invoiced', '=', True)]}" -->
 
-            <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,confirm,approved,done"/>
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
@@ -110,7 +111,9 @@
                   <tree editable="bottom">
                     <field name="product_id" options="{'no_create': True, 'no_edit': True}" />
                     <field name="qty"/>
-                    <field name="cost" invisible="1" />
+                    <field name="cost" invisible="1" groups="shipment.group_shimpment_pricing" />
+                    <field name="price" invisible="1" groups="shipment.group_shimpment_pricing"/>
+                    <field name="commission" invisible="1" groups="shipment.group_shimpment_pricing"/>
                   </tree>
                 </field>
               </page>
@@ -136,17 +139,116 @@
       </field>
     </record>
 
+
+    <record id="veiw_shipment_order_pricing" model="ir.ui.view">
+      <field name="name">shipment.shipment.order.form</field>
+      <field name="model">shipment.order</field>
+      <field name="arch" type="xml">
+        <form string="Shipment Order" class="o_sale_order">
+          <header>
+            <button name="action_approve" string="Approve Pricing" groups="shipment.group_shimpment_pricing" type="object" class="oe_highlight" states="confirm"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,confirm,approved,done"/>
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="open_vendor_bills" class="oe_stat_button" type="object" icon="fa-money">
+                <field string="Bills" name="bills_count" widget="statinfo"/>
+              </button>
+
+              <button name="open_customer_invoices" class="oe_stat_button" type="object" icon="fa-money">
+                <field string="Invoices" name="invoices_count" widget="statinfo"/>
+              </button>
+              <button name="open_commission" class="oe_stat_button" type="object" icon="fa-money"  >
+                <field string="commission" name="commission_count" widget="statinfo"/>
+              </button>
+
+            </div>
+
+            <div class="oe_title">
+              <h1>
+                <field name="name" placeholder="B/L Number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+              </h1>
+            </div>
+            <group>
+              <group>
+                <field name="customer_id" domain="[('customer', '=', True)]"  context="{'res_partner_search_mode': 'customer', 'default_customer' : True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="from_port" options="{'no_create': True, 'no_edit': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="date_order" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+              </group>
+              <group>
+                <field name="vendor_id" domain="[('line', '=', True)]"  options="{'no_create': True, 'no_edit': True}" context="{'res_partner_search_mode': 'supplier'}" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                <field name="to_port" options="{'no_create': True, 'no_edit': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                 <field name="agent" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+              </group>
+            </group>
+            <notebook>
+              <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
+              <page string="Order Lines" name="Order Lines">
+                <field name="line_ids" attrs="{'readonly': [('state', 'not in', ['draft','confirm'])]}">
+                  <tree editable="bottom">
+                    <field name="product_id" options="{'no_create': True, 'no_edit': True}" />
+                    <field name="qty"/>
+                    <field name="cost" invisible="0" groups="shipment.group_shimpment_pricing" />
+                    <field name="price" invisible="0" groups="shipment.group_shimpment_pricing"/>
+                    <field name="commission" invisible="0" groups="shipment.group_shimpment_pricing"/>
+                  </tree>
+                </field>
+              </page>
+              <page name="Info" string="Other Info">
+                <group>
+                  <group string="Accounting" name ="accounting_info_group">
+                    <!-- <field name="inv_id" readonly="1" attrs="{'invisible': [('invoiced', '!=', True)]}"/>
+                    <field name="bill_id" readonly="1" attrs="{'invisible': [('billed', '!=', True)]}"/> -->
+                  </group>
+                </group>
+                <field name="narration" placeholder="Add an internal note..." nolabel="1" height="50"/>
+              </page>
+
+
+            </notebook>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+
     <!-- actions opening views on models -->
     <record id="action_orders" model="ir.actions.act_window">
       <field name="name">Shipment Orders</field>
       <field name="res_model">shipment.order</field>
       <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="veiw_shipment_order"/>
       <field name="help" type="html">
         <p class="o_view_nocontent_smiling_face">
                     Create a new shipment, the first step of a new sale!
         </p>
        
       </field>
+    </record>
+
+    <record id="action_orders_pricing" model="ir.actions.act_window">
+      <field name="name">Orders Pricing</field>
+      <field name="res_model">shipment.order</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="veiw_shipment_order_pricing"/>
+      <field name="domain">[('state','=','confirm')]</field>
+    </record>
+
+    <record id="action_orders_tree" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_orders"/>
+    </record>
+
+    <record id="action_orders_pricing_tree" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_orders_pricing"/>
     </record>
 
   </data>

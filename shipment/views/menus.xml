@@ -8,6 +8,8 @@
     <!-- Orders menu -->
     <menuitem id="shipment_order_menu" name="Orders" parent="shipment_order_root_menu" action="action_orders" />
 
+    <menuitem id="shipment_order_pricing_menu" name="Pricing" parent="shipment_order_root_menu" action="action_orders_pricing" />
+
     <!-- report main menu -->
     <menuitem id="shipment_order_reports" name="Reports" parent="shipment_menu_root" groups="shipment.group_shimpment_manager"  sequence="2"/>
     <!-- profit lose menu -->

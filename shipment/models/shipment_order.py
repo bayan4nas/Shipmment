@@ -23,9 +23,7 @@ class ShipmentOrder(models.Model):
     customer_id = fields.Many2one(
         string='Customer',
         comodel_name='res.partner',
-        required=True,
-       
-        
+        required=True,    
     )
 
     vendor_id = fields.Many2one(
@@ -52,7 +50,7 @@ class ShipmentOrder(models.Model):
     
     
     state = fields.Selection(
-        selection=[('draft', 'Draft'), ('confirm', 'confrim'),('done', 'Done')],string='State',default='draft'
+        selection=[('draft', 'Draft'), ('confirm', 'Wait Manager'), ('approved', 'Ready'),('done', 'Done')],string='State',default='draft'
     )
     
     date_order = fields.Date(string='Order Date', required=True, readonly=True, index=True, states={'draft': [('readonly', False)]}, copy=False, default=fields.Date.context_today, help="Creation date of draft orders,\nConfirmation date of confirmed orders.")
@@ -141,11 +139,17 @@ class ShipmentOrder(models.Model):
             raise UserError(_("You should add at least on container to the order"))
         self.state = 'confirm'
         
+    def action_approve(self):
+        self.state = 'approved'
     
     def action_draft(self):
         self.state = 'draft'
 
     def create_customer_invocie(self):
+        if self.state != 'approved' :
+            raise ValidationError(_("Sorry, Wait Manager to Approve Prices !!"))
+        if self.bills_count < 1 :
+            raise ValidationError(_("Sorry, You must Create Line invoice first !!"))
         #this method is called to open wizard,
         # of how user wants to create the customer invoice
         context = dict(self.env.context)
@@ -165,6 +169,8 @@ class ShipmentOrder(models.Model):
         
     
     def create_vendor_bill(self):
+        if self.state != 'approved' :
+            raise ValidationError(_("Sorry, Wait Manager to Approve Prices !!"))
          #this method is called to open wizard,
         # of how user wants to create the vendor invoice
         context = dict(self.env.context)
@@ -183,6 +189,11 @@ class ShipmentOrder(models.Model):
         }
 
     def create_commission(self):
+        if self.state != 'approved' :
+            raise ValidationError(_("Sorry, Wait Manager to Approve Prices !!"))
+        if self.invoices_count < 1 :
+            raise ValidationError(_("Sorry, You must Create Line and customer invoices first !!"))
+
         context = dict(self.env.context)
         context['invoice_type'] = 'in'
         context['default_is_ship'] = True
@@ -248,8 +259,6 @@ class ShipmentOrderLine(models.Model):
         comodel_name='shipment.order',
     )
     
-    cost = fields.Float(
-        string='Cost',
-    )
-    
-    
+    cost = fields.Float('Line Cost')
+    price = fields.Float('Customer Price')
+    commission = fields.Float('Commission Amount')
